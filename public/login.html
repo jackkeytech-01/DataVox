@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | DataVox</title>
+    <link rel="stylesheet" href="./form_style.css" type="text/css"/>
+    <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+</head>
+<body>
+    <form id="login_form" method="post" class="form" action="login">
+
+    <div class="logo" style="cursor: pointer;" onclick="window.location.href='/';">
+        DataVox
+    </div>
+
+    <div class="header">
+        Welcome Back
+    </div>
+
+    <input
+        type="text"
+        name="username"
+        placeholder="Enter Username">
+
+    <input
+        type="password"
+        name="password"
+        placeholder="Enter Password">
+
+    <p id="err"></p>
+
+    <input
+        type="submit"
+        value="Log In" id="send">
+
+    <div class="form-footer">
+
+        Don't have an account?
+
+        <a href="/signup">
+            Sign Up
+        </a>
+
+    </div>
+
+</form>
+<script type="text/javascript" src="./login_script.js"></script>
+</body>
+</html>

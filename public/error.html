@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>404 Not Found</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#07192e;
+
+color:white;
+}
+
+.error-container{
+
+width:90%;
+max-width:500px;
+
+text-align:center;
+
+padding:30px;
+}
+
+.error-code{
+
+font-size:6rem;
+
+font-weight:bold;
+
+color:#00c6ff;
+
+text-shadow:
+0 0 20px rgba(0,198,255,.4);
+}
+
+.error-title{
+
+font-size:2rem;
+
+margin:10px 0;
+}
+
+.error-text{
+
+color:#b7c4d4;
+
+line-height:1.6;
+
+margin-bottom:25px;
+}
+
+.back-btn{
+
+border:none;
+
+padding:14px 25px;
+
+border-radius:10px;
+
+background:linear-gradient(
+90deg,
+#007bff,
+#00c6ff
+);
+
+color:white;
+
+font-size:1rem;
+
+cursor:pointer;
+
+transition:.3s;
+}
+
+.back-btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+0 10px 20px rgba(0,198,255,.25);
+}
+
+.back-btn i{
+margin-right:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="error-container">
+
+<div class="error-code">
+404
+</div>
+
+<h1 class="error-title">
+Page Not Found
+</h1>
+
+<p class="error-text">
+Sorry, the page you're looking for doesn't exist,
+was moved, or has been deleted.
+</p>
+
+<button
+class="back-btn"
+onclick="window.history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+Go Back
+
+</button>
+
+</div>
+
+</body>
+</html>

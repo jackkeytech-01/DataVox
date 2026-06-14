@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Records</title>
+
+<link rel="stylesheet" href="records.css" type="text/css"/>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    /*background:#f5f7fb;*/
+    /*background-image: linear-gradient(to right, rgb(0, 128, 0, 0.8), rgb(0, 100, 100), rgb(100, 100, 100) );*/
+    background:
+linear-gradient(
+135deg,
+#08111f,
+#0f1d33,
+#00a8cc
+);
+
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+
+.top-bar{
+    height:80px;
+    background:#04295f;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+}
+
+.top-bar h2{
+    font-size:1.1rem;
+}
+
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.2rem;
+    cursor:pointer;
+}
+
+.invisible{
+    visibility:hidden;
+}
+
+/* MAIN */
+
+main{
+    padding:20px;
+}
+
+/* RECORD CARD */
+
+.record-card{
+
+    background: rgb(4, 41, 95, 0.5);
+    /*backdrop-filter: blur(200px);*/
+    border-radius:14px;
+
+    text-decoration:none;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px;
+
+    margin-bottom:14px;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+
+    transition:.25s;
+    border-color: rgb(0, 200, 200,0.8);
+    border-style: solid;
+    border-width: 2px;
+}
+
+.record-card:hover{
+    transform:translateY(-2px);
+}
+
+.left-side{
+
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+}
+
+/* CALENDAR ICON */
+
+.calendar-box{
+
+    width:42px;
+    height:42px;
+
+    border-radius:10px;
+
+    background:#eef2ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#64748b;
+}
+
+/* INFO */
+
+.record-info h3{
+
+    font-size:1rem;
+
+    margin-bottom:8px;
+
+    /*color:#1f2937;*/
+    color: white;
+}
+
+.totals{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:16px;
+
+    font-size:.9rem;
+}
+
+.green{
+    color:#16a34a;
+}
+
+.red{
+    color:#ef4444;
+}
+
+/* ARROW */
+
+.card-actions{
+    display:flex;
+    gap:8px;
+}
+
+.action-btn{
+    width:38px;
+    height:38px;
+
+    border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.25s;
+}
+
+.edit-btn{
+    background:#e0f2fe;
+    color:#0284c7;
+}
+
+.delete-btn{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.action-btn:hover{
+    transform:scale(1.08);
+}
+.zero_error {
+    position: fixed;
+    display: flex;
+    top: 30%;
+    right: 20%;
+    left: 20%;
+    width: auto;
+    height: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /*border: 2px solid limegreen;*/
+    border: none;
+    padding: 1%;
+    background: transparent;
+    backdrop-filter: blur(100px);
+    border-radius: 20px;
+}
+.zero_error.hide {
+    display: none;
+}
+.err {
+    color: red;
+    font-weight: bolder;
+    margin: 2%;
+}
+input {
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+    width: 100%;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+    padding: 2%;
+    outline: none;
+    border: 1.5px solid white;
+    border-radius: 8px;
+    background: transparent;
+    color: limegreen;
+    font-size: 1em;
+}
+input:focus {
+    border: 1.5px solid limegreen;
+    font-weight: bolder;
+}
+.btn {
+    margin: 1.5%;
+    padding: 2.5%;
+    padding-left: 4%;
+    padding-right: 4%;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1em;
+    font-family: Poppins;
+}
+.new_r {
+    position: fixed;
+    z-index: 9999;
+    bottom: 15%;
+    right: 5%;
+    background: rgb(0, 128, 0, 0.8);
+    text-align: center;
+    padding: 5%;
+    border-radius: 20px;
+    color: rgb(0, 255, 0, 1);
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.new_r:hover {
+    animation: glow 1s infinite ease;
+}
+@media (min-width: 800px) {
+    .new_r {
+        padding: 2%;
+        transition: all 0.5s;
+    }
+    .new_r:hover {
+        transform: scale(1.1, 1.1);
+    }
+}
+@keyframes glow {
+    0% {
+        transform: scale(1, 1);
+    transition: all 1s;
+    }
+    25% {
+        transform: scale(1.1, 1.1);
+    transition: all 1s;
+    }
+    50% {
+        transform: scale(1.2, 1.2);
+    transition: all 1s;
+    }
+    75% {
+        transform: scale(1.1, 1.1);
+    transition: all 1s;
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/nav.css"/>
+<link rel="stylesheet" type="text/css" href="/main.css"/>
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+</head>
+<body>
+
+<header class="top-bar">
+
+    <button class="icon-btn" onclick="window.history.back();">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h2>RECORDS</h2>
+
+    <button class="icon-btn invisible">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+</header>
+<div class="fly_message" id="fly_message">
+</div>
+<main id="main_body">
+
+
+
+<!--
+
+    <a href="#" class="record-card">
+
+        <div class="left-side">
+
+            <div class="calendar-box">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="record-info">
+
+                <h3>03 June 2026</h3>
+
+                <div class="totals">
+
+                    <span>
+                        Sales:
+                        <strong class="green">
+                            150,000
+                        </strong>
+                    </span>
+
+                    <span>
+                        Expenses:
+                        <strong class="red">
+                            30,000
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-actions">
+
+    <button class="action-btn edit-btn"
+            onclick="event.preventDefault(); editRecord();">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="action-btn delete-btn"
+            onclick="event.preventDefault(); deleteRecord();">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+
+    </a>
+
+
+
+
+
+    <a href="#" class="record-card">
+
+        <div class="left-side">
+
+            <div class="calendar-box">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="record-info">
+
+                <h3>02 June 2026</h3>
+
+                <div class="totals">
+
+                    <span>
+                        Sales:
+                        <strong class="green">
+                            120,000
+                        </strong>
+                    </span>
+
+                    <span>
+                        Expenses:
+                        <strong class="red">
+                            25,000
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-actions">
+
+    <button class="action-btn edit-btn"
+            onclick="event.preventDefault(); editRecord();">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="action-btn delete-btn"
+            onclick="event.preventDefault(); deleteRecord();">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+
+    </a>
+
+
+
+
+
+    <a href="#" class="record-card">
+
+        <div class="left-side">
+
+            <div class="calendar-box">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="record-info">
+
+                <h3>01 June 2026</h3>
+
+                <div class="totals">
+
+                    <span>
+                        Sales:
+                        <strong class="green">
+                            100,000
+                        </strong>
+                    </span>
+
+                    <span>
+                        Expenses:
+                        <strong class="red">
+                            20,000
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-actions">
+
+    <button class="action-btn edit-btn"
+            onclick="event.preventDefault(); editRecord();">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="action-btn delete-btn"
+            onclick="event.preventDefault(); deleteRecord();">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+
+    </a>
+
+
+
+
+    <a href="#" class="record-card">
+
+        <div class="left-side">
+
+            <div class="calendar-box">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="record-info">
+
+                <h3>31 May 2026</h3>
+
+                <div class="totals">
+
+                    <span>
+                        Sales:
+                        <strong class="green">
+                            130,000
+                        </strong>
+                    </span>
+
+                    <span>
+                        Expenses:
+                        <strong class="red">
+                            28,000
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-actions">
+
+    <button class="action-btn edit-btn"
+            onclick="event.preventDefault(); editRecord();">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="action-btn delete-btn"
+            onclick="event.preventDefault(); deleteRecord();">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+
+    </a>
+
+
+
+
+    <a href="#" class="record-card">
+
+        <div class="left-side">
+
+            <div class="calendar-box">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="record-info">
+
+                <h3>30 May 2026</h3>
+
+                <div class="totals">
+
+                    <span>
+                        Sales:
+                        <strong class="green">
+                            90,000
+                        </strong>
+                    </span>
+
+                    <span>
+                        Expenses:
+                        <strong class="red">
+                            18,000
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-actions">
+
+    <button class="action-btn edit-btn"
+            onclick="event.preventDefault(); editRecord();">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="action-btn delete-btn"
+            onclick="event.preventDefault(); deleteRecord();">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+
+    </a>
+
+-->
+<!--
+<div class="zero_error">
+    <div class="err">Oops! no records available.</div>
+    <div class="btn">+ Add New Record</div>
+</div>
+-->
+</main>
+<form class="zero_error" id="top_prompt" method="post" action="/account/records/new">
+    <i class="fa-solid fa-close" onclick="showNew(false);"></i>
+    <label>Record Title</label>
+    <input type="text" placeholder="Record title" name="title" id="title"/>
+    <button type="submit" class="btn">
+        Create Record
+    </button>
+</form>
+<div class="new_r" onclick="showNew(true);">
+    <i class="fa-solid fa-plus"></i>
+</div>
+<nav class="bottom-nav" id="nav"></nav>
+<script type="text/javascript" src="/main.js"></script>
+<script src="/nav.js" type="text/javascript"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadNav('records');
+    });
+</script>
+<script src="/recordScript.js" type="text/javascript"></script>
+
+<!--
+For the displaying and disappearing od the top form creator
+-->
+<script type="text/javascript">
+    let prompt = document.getElementById('top_prompt');
+    showNew(false);
+    function showNew(opt) {
+        if (opt) {
+            prompt.classList.remove('hide');
+        }
+        else {
+            prompt.classList.add('hide');
+        }
+    }
+</script>
+
+<!--
+Delete function
+-->
+<script type="text/javascript">
+    async function deleteRecord(id) {
+        let sn = 0;
+        try {
+        const _user = await fetch('/account/api/user');
+        const info = await _user.json();
+        //Looking for the record
+        for (var i=0; i<info.dailyRecords.length; i++) {
+             if (info.dailyRecords[i]._id.toString()===id.toString()) {
+                sn = i;
+             }
+            }
+        const userconfirm = confirm(`Are you sure you wanna delete?\nRecord titled: ${info.dailyRecords[sn].title}`);
+        if (userconfirm) {
+            deleteRecordNow(id);
+        }
+        else {
+            //Do nothing
+        }
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Failed to fetch record. Please Refresh page and try again.')
+        }
+    }
+
+
+
+    async function deleteRecordNow(id) {
+        
+        //Fetching user data to target ID for record
+        try {
+        const _user = await fetch('/account/api/user');
+        const info = await _user.json();
+        //Looking for the record
+        for (var i=0; i<info.dailyRecords.length; i++) {
+            if (info.dailyRecords[i]._id.toString()===id.toString()) {
+                //Look for any sales if present
+                if (info.dailyRecords[i].sales.length>0) {
+                    const userconfirm = confirm('Record Containts sales. Do you want to return sales Quantity to Store?\n[OK] To agree\n[CANCEL] To deny')
+                    if (userconfirm) {
+                    for (var q=0; q<info.dailyRecords[i].sales.length; q++) {
+                        await fetch(`/account/records/edit/delete/sale/${info.dailyRecords[i].sales[q]._id}`,{
+                        method: 'DELETE',
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    }
+                    //Delete the record
+                    try {
+                             const res = await fetch(`/account/records/delete/${id}`, {
+                                method: 'DELETE'
+                                });
+                            const data = await res.json();
+                            if (data.problem) {
+                                flyMSG('err', data.message);
+                            }
+                            else {
+                                flyMSG('',data.message);
+                                getRecords();
+                            }
+                            }
+                        catch (err) {
+                            console.log(err.message);
+                            flyMSG('err', 'Server Error Occurred.');
+                            }
+                } else {
+                    try {
+                             const res = await fetch(`/account/records/delete/${id}`, {
+                                method: 'DELETE'
+                                });
+                            const data = await res.json();
+                            if (data.problem) {
+                                flyMSG('err', data.message);
+                            }
+                            else {
+                                flyMSG('',data.message);
+                                getRecords();
+                            }
+                            }
+                        catch (err) {
+                            console.log(err.message);
+                            flyMSG('err', 'Server Error Occurred.');
+                            }
+                }
+                }
+                else {
+                        try {
+                             const res = await fetch(`/account/records/delete/${id}`, {
+                                method: 'DELETE'
+                                });
+                            const data = await res.json();
+                            if (data.problem) {
+                                flyMSG('err', data.message);
+                            }
+                            else {
+                                flyMSG('',data.message);
+                                getRecords();
+                            }
+                            }
+                        catch (err) {
+                            console.log(err.message);
+                            flyMSG('err', 'Server Error Occurred.');
+                            }
+                }
+            }
+        }
+        } catch (err) {
+            console.log(err.message);
+            flyMSG('err','Failed to get the record. Please Log in or refresh page to try again.')
+        }
+
+    }
+</script>
+<!--
+For the time input on the input box
+-->
+<script type="text/javascript">
+
+function updateDate() {
+  const now = new Date();
+  const today = now.toDateString();
+  document.getElementById('title').value = today;
+}
+updateDate();
+setTimeout(updateDate, 10000);
+</script>
+
+<!--
+Submitting the request for creating a new record
+-->
+<script type="text/javascript">
+    let form = document.getElementById('top_prompt');
+    form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        let title = e.target.title.value.trim();
+        const res = await fetch('/account/records/new', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title })
+        })
+        const data = await res.json();
+        if (data.problem) {
+            flyMSG('err', data.message);
+        }
+        else {
+            flyMSG('', data.message);
+            form.reset();
+            showNew(false);
+            setTimeout(()=>{
+                location.reload(true);
+            }, 1000);
+        }
+    })
+</script>
+</body>
+</html>

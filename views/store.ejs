@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/store.css" type="text/css"/>
+  <link rel="stylesheet" href="/main.css" type="text/css"/>
+  <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <title>Store</title>
+  <style>
+    .record_data,
+    .headers {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+    .headers {
+      text-align: center;
+      padding: 0.5%;
+    }
+  </style>
+</head>
+<body>
+
+  <!--<script type="text/javascript" src="/store_script.js" defer></script>-->
+
+  <div class="top_panel">
+    <i onclick="window.history.back();" class="fa fa-arrow-left"></i>&nbsp;&nbsp;<i class="fa fa-store"></i> <b>Store</b>
+  </div>
+  
+  <div class="controls">
+    <div class="control" onclick="selectItems();"><i  class="fa fa-check"></i></div>
+    <div class="control" onclick="displayForm('add', true)"><i   class="fa fa-trash"></i></div>
+    <div class="control" add onclick="displayForm('add', true)"><i   class="fa fa-plus"></i></div>
+  </div>
+  <div class="options">
+    <%if (no_>0) {%>
+    <div class="option" onclick="showTab(0)">(<%= no_ %>) Products</div>
+    <div class="option" onclick="showTab(1)">(<%= runOut %>) Running out</div>
+    <%} else {%>
+      <div class="option" onclick="showTab(0)">(0)Products</div>
+  <%}%>
+  </div>
+  <div class="infos">
+    <div class="info">
+      <%if (no_>0) { %>
+        <div class="product_table">
+          <div class="headers">
+            <div class="head" select id="checkers"><i>Select</i></div>
+            <div class="head">NAME</div>
+            <div class="head">Quantity</div>
+            <div class="head">Unit Price</div>
+            <div class="head">Selling Price</div>
+            <div class="head">Running out alert</div>
+          </div>
+          <% products.forEach((product)=>{ %>
+            <div class="record_data" onclick="showInfo('<%=product._id%>')">
+              <div class="field" select id="checkers"><input type="checkbox" onselect="additem('<%=product._id%>')" class="checkbox" /></div>
+              <div class="field"><%=product.name%></div>
+              <div class="field"><%=product.qn%></div>
+              <div class="field"><%=product.unitPrice%> <i>from <%=product.unitFrom%></i></div>
+              <div class="field"><%=product.sellingPrice%></div>
+              <div class="field"><%= product.running_out %></div>
+            </div>
+        
+        <% }) %>
+        </div>
+        <% } else { %>
+          <center>No Products Found</center>
+        <%}%>
+    </div>
+    <div class="info">
+        <% if (runOut>0) {%>
+        <table borders="5px" cellspacing="15px" cellpadding="15px">
+          <% products.forEach((product)=>{%>
+            <% if (product.running_out>=product.qn) {%>
+              <tr>
+                <div class="field"><%=product.name%></div>
+                <td class="running_out"><%=product.qn%></div>
+                <div class="field"><%=product.unitPrice%> <i>from <%=product.unitFrom%></i></div>
+              <div class="field"><%=product.sellingPrice%></div>
+                <div class="field"><%= product.running_out%></div>
+              </tr>
+              <%}%>
+            <%})%>
+            </table>
+            <%} else {%>
+              <center>No Products Running Out</center>
+            <%}%>
+        
+    </div>
+  </div>
+  <!--
+  form to always appear on top during adding a new product
+  -->
+    
+    <form method="post" action="addStore" id="form_" class="top_form">
+      <right>
+      <div class="close" onclick="displayForm(false)"><i  class="fa fa-close"></i></div>
+      </right>
+      <div class="form_head" id="form_head">New Product</div>
+      <input type="text" placeholder="Product Name" id="name_input" name="name" required/>
+      <input type="number" placeholder="Quantity" name="qn" id="qn_input" required/>
+      <input type="number" name="running_out" id="run_input" placeholder="Running Alert From" required/>
+      <input type="number" placeholder="Unit Price" name="unitPrice" id="unitPrice_input" required/>
+      <input type="number" placeholder="Order From" id="unitFrom_input" name="unitFrom" required/>
+      <input type="number" placeholder="Selling Price" id="sellingPrice_input" name="sellingPrice" required/>
+      <p id="err"></p>
+      <input type="submit" id="send_btn" value="Add Product"/>
+    </form>
+
+    <!--
+    Flying message on the screen
+    -->
+    <div class="fly_message" id="fly_message">
+    </div>
+
+    <!--<button onclick="flyMSG('Hello User');">Click me</button>-->
+
+  <script type="text/javascript" defer>
+    let _tab = document.getElementsByClassName("info");
+    showTab(0);
+    function showTab(index) {
+      for (var i = 0; i<_tab.length; i++) {
+        _tab[i].style.display='none';
+        _tab[index].style.display='block';
+      }
+    }
+  </script>
+
+
+  <script type="text/javascript">
+    form_.classList.remove('show');
+    form_.classList.add('hide');
+    function displayForm(purpose, show) {
+      if (purpose==='add') {
+        form_title.textContent = 'New product';
+        _send.value = 'Add Product';
+        form_.setAttribute('action', 'addStore');
+        name.value = '';
+        qn.value = '';
+        running_out.value = '';
+        unitPrice.value = '';
+        unitFrom.value = '';
+        sellingPrice.value = '';
+      }
+      if (show) {
+        form_.classList.remove('hide')
+        form_.classList.add('show');
+      }
+      else {
+        form_.classList.remove('show')
+        form_.classList.add('hide');
+      }
+    }
+  </script>
+
+
+
+
+  <script type="text/javascript">
+    let form_title = document.getElementById('form_head');
+    let name = document.getElementById('name_input');
+    let qn = document.getElementById('qn_input');
+    let running_out = document.getElementById('run_input');
+    let unitPrice = document.getElementById('unitPrice_input');
+    let unitFrom = document.getElementById('unitFrom_input');
+    let sellingPrice = document.getElementById('sellingPrice_input');
+    let _send = document.getElementById('send_btn');
+
+    let idCarrier = '';
+    async function showInfo(_id) {
+      idCarrier = _id;
+      form_title.textContent = 'Product Details';
+      _form.setAttribute('action', `/store/${_id}`);
+      _form.setAttribute('method', 'put');
+      _send.value = 'Edit Product';
+      displayForm('', true);
+      let res = await fetch(`/account/store/${_id}`, { method: 'GET'});
+      let product = await res.json();
+      name.value = product.name;
+      qn.value = product.qn;
+      running_out.value = product.running_out;
+      unitPrice.value = product.unitPrice;
+      unitFrom.value = product.unitFrom;
+      sellingPrice.value = product.sellingPrice;
+
+    }
+
+  </script>
+  <script type="text/javascript" defer>
+const _form = document.getElementById('form_');
+let err = document.getElementById('err');
+let send_btn = document.getElementById('send_btn');
+send_btn.disabled = false;
+err.style.visibility = 'hidden';
+
+
+_form.addEventListener('submit', async (e)=> {
+  e.preventDefault();
+  send_btn.disabled = true;
+  send_btn.value = 'Loading';
+  let name = e.target.name.value.trim();
+  let qn = parseInt(e.target.qn.value);
+  let running_out = parseInt(e.target.running_out.value);
+  let unitPrice = parseInt(e.target.unitPrice.value);
+  let unitFrom = parseInt(e.target.unitFrom.value);
+  let sellingPrice = parseInt(e.target.sellingPrice.value);
+  //formInspect(e);
+  try {
+    if (_form.getAttribute('action')==='addStore') {
+      AddStore();
+    }
+    else if (_form.getAttribute('method')==='put' && _form.getAttribute('action')===`/store/${idCarrier}`){
+      //console.log(`Gotcha: ${_form.getAttribute('action')}`)
+      updateRecord(idCarrier);
+    }
+}
+catch (err) {
+  showMSG(true, 'Server Error Occured');
+  console.error(err);
+    send_btn.disabled=false;
+    if (_form.getAttribute('action')==='addStore') {
+  send_btn.value='Add Product';
+    }
+    else if (_form.getAttribute('method')==='put' && _form.getAttribute('action')===`/store/${idCarrier}`){
+      //console.log(`Gotcha: ${_form.getAttribute('action')}`)
+      send_btn.value = 'Edit Product';
+}
+}
+})
+
+
+
+
+function showMSG(prob, data) {
+  let fly_msg = document.getElementById('fly_message');
+  if (prob) {
+  fly_msg.style.color = 'red';
+  flyMSG('err', data);
+  }
+  else {
+    fly_msg.style.color = 'brown';
+    flyMSG('', data);
+  }
+  /*
+  err.style.visibility = 'visible';
+  err.textContent = data;
+  /*
+  setTimeout(()=>{
+    err.style.visibility='hidden';
+    err.textContent = '';
+  }, 3000)
+  */
+}
+
+
+
+
+/*
+form inspector
+
+function formInspect(e) {
+const name = e.target.name.value.trim();
+  const qn = Number(e.target.qn.value);
+  const running_out = Number(e.target.running_out.value);
+  const unitPrice = Number(e.target.unitPrice.value);
+  const unitFrom = Number(e.target.unitFrom.value);
+  const sellingPrice = Number(e.target.sellingPrice.value);
+  //console.log(`${name} ${qn} ${running_out} ${unitPrice} ${unitFrom} ${sellingPrice}`)
+
+  if (
+    !name || !qn || !running_out || !unitPrice || !unitFrom || !sellingPrice
+  ) {
+    showMSG(true, 'Please Fill all fields');
+    return;
+  }
+  if (
+    typeof qn !== 'number' || isNaN(qn) ||
+    typeof running_out !== 'number' || isNaN(running_out) ||
+    typeof unitPrice !== 'number' || isNaN(unitPrice) ||
+    typeof unitFrom !== 'number' || isNaN(unitFrom) ||
+    typeof sellingPrice !== 'number' || isNaN(sellingPrice)
+  )
+  {
+    showMSG(true, 'Error: Quantity, Running Out, Unit Price, and Selling Price must be valid numbers.')
+    return;
+  }
+}
+*/
+
+
+
+
+/*
+Adding to store
+*/
+async function AddStore() {
+  const res = await fetch('/account/addStore', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, qn, running_out, unitPrice, unitFrom, sellingPrice })
+  })
+  const data = await res.json();
+  if (data.problem) {
+    showMSG(data.problem, data.message);
+    send_btn.disabled=false;
+    send_btn.value='Add Product';
+    return;
+  }
+  
+  send_btn.disabled=false;
+  send_btn.value='Add Product';
+  form.reset();
+}
+
+
+
+
+async function updateRecord(id_) {
+  const res = await fetch(`/store/${id_}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, qn, running_out, unitPrice, unitFrom, sellingPrice })
+  });
+  const data = await res.json();
+if (data.problem) {
+send_btn.disabled = false;
+}
+else {
+  displayForm('', false);
+  window.location.href = '/account/store';
+  flyMSG('Product Edited Successfully')
+}
+  showMSG(data.problem, data.message);
+}
+
+
+
+
+function deleteRecord() {
+  
+}
+</script>
+
+
+  <script type="text/javascript" src="/main.js" defer></script>
+
+</body>
+</html>

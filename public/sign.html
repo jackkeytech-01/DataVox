@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | DataVox</title>
+    <link rel="stylesheet" href="./form_style.css" type="text/css"/>
+    <link rel="stylesheet" href="./main.css" type="text/css"/>
+    <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+</head>
+<body>
+    <div class="fly_message" id="fly_message"></div>
+    <form method="post" id="signup_form" class="form" action="signup">
+
+    <div class="logo" style="cursor: pointer;" onclick="window.location.href='/';">
+        DataVox
+    </div>
+
+    <div class="header">
+        Create Account
+    </div>
+    <input
+        type="text"
+        name="name"
+        placeholder="Full Name" pattern="[A-Z, a-z]+$">
+
+    <input
+        type="text"
+        name="username"
+        placeholder="Username">
+
+
+    <input
+        type="email"
+        name="email"
+        placeholder="Enter Email">
+
+    <input
+        type="password"
+        name="password"
+        placeholder="Password">
+
+    <p id="err"></p>
+
+    <input
+        type="submit"
+        value="Create Account" id="send">
+
+    <div class="form-footer">
+
+        Already have an account?
+
+        <a href="/login">
+            Log In
+        </a>
+
+    </div>
+
+</form>
+<script src="./signup.js" type="text/javascript"></script>
+<script src="./main.js" type="text/javascript"></script>
+</body>
+</html>

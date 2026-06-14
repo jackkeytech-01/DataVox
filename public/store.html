@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Store</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="/top_form.css" type="text/css" />
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#07192e;
+color:white;
+}
+
+.store-container{
+padding:15px;
+}
+
+/* HEADER */
+
+.store-header{
+
+background:linear-gradient(
+90deg,
+#007bff,
+#00c6ff
+);
+
+padding:15px;
+
+border-radius:12px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+}
+
+.header-top{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+}
+
+.header-top h2{
+font-size:1.4rem;
+}
+
+.store-summary{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+}
+
+.add-btn{
+
+border:none;
+
+background:#005eff;
+
+color:white;
+
+padding:12px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:bold;
+}
+
+/* PRODUCT CARD */
+
+.products{
+
+margin-top:20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+}
+
+.product-card{
+
+background:#10253f;
+
+border-radius:12px;
+
+padding:15px;
+
+box-shadow:
+0 4px 10px rgba(0,0,0,.2);
+}
+
+.product-name{
+
+font-size:1.2rem;
+
+font-weight:bold;
+
+margin-bottom:15px;
+
+color:#fff;
+}
+
+.info-row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:6px 0;
+
+border-bottom:
+1px solid rgba(255,255,255,.05);
+}
+
+.info-row:last-child{
+border:none;
+}
+
+.label{
+color:#9db4cf;
+}
+
+.value{
+font-weight:bold;
+}
+
+.alert{
+color:#ff9800;
+}
+
+.card-actions{
+
+display:flex;
+
+gap:10px;
+
+margin-top:15px;
+}
+
+.edit-btn{
+
+flex:1;
+
+background:#4caf50;
+
+border:none;
+
+padding:12px;
+
+border-radius:8px;
+
+color:white;
+
+cursor:pointer;
+}
+
+.delete-btn{
+
+flex:1;
+
+background:#f44336;
+
+border:none;
+
+padding:12px;
+
+border-radius:8px;
+
+color:white;
+
+cursor:pointer;
+}
+.main_panes {
+	width: 100%;
+	height: 100%;
+}
+.zero {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	position: fixed;
+	top: 40%;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	z-index: 9999;
+}
+.zero_txt {
+	display: block;
+	font-weight: bold;
+	color: red;
+	width: 100%;
+}
+.btn {
+	display: block;
+	padding: 2.5%;
+	text-align: center;
+	background: green;
+	color: white;
+	border: none;
+	font-weight: bold;
+	font-family: candara;
+	border-radius: 60px;
+	width: fit-content;
+	align-self: center;
+	margin-top: 2%;
+	cursor: pointer;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/nav.css"/>
+<link rel="stylesheet" type="text/css" href="/main.css">
+</head>
+<body>
+
+<div class="store-container">
+
+<header class="store-header">
+
+<div class="header-top">
+
+<h2>
+<i onclick="window.history.back();" class="fa fa-arrow-left"></i>
+Store
+</h2>
+
+</div>
+
+<div class="store-summary">
+
+<span style="cursor: pointer;" id="products_btn" onclick="showProducts(true);">(<span id="total_products"></span>) Products</span>
+
+<span style="cursor: pointer;" id="runout_btn" onclick="showProducts(false);">(<span id="total_runOut"></span>) Running Out</span>
+
+</div>
+
+<button class="add-btn" onclick="window.location.href='/account/store/add';">
+
++ Add Product
+
+</button>
+
+</header>
+<div class="fly_message" id="fly_message">
+</div>
+
+<!-- PRODUCTS PANE-->
+<div id="products_body" class="main_panes">
+
+	<div class="products" id="product_view">
+
+		</div>
+
+</div>
+
+<!--	RUNNING OUT PANE -->
+<div id="runOut_body" class="main_panes">
+	<div class="products" id="runout_view">
+	</div>
+</div>
+
+
+<!-- FORM PANE -->
+<form class="form-card" id="form_">
+					<center>
+						<b>
+							Edit Product
+						</b>
+					</center>
+					<br/>
+        <div class="input-group">
+            <label>Product Name</label>
+        <input list="names"  name="name" id="name_input" placeholder="Product Name">
+
+
+        </div>
+
+        <div class="input-group">
+            <label>Product Unique ID</label>
+            <input type="text" placeholder="Product ID" name="id" id="id_input"  required />
+        </div>
+
+        <div class="input-group">
+            <label>Quantity</label>
+            <input type="number" placeholder="e.g. 50" name="qn" id="qn_input" required />
+        </div>
+
+        <div class="input-group">
+            <label>Unit Price (TZS)</label>
+            <input type="number" placeholder="e.g. 500" name="unitPrice" id="unitPrice_input" required />
+        </div>
+
+        <div class="input-group">
+            <label>Unit From</label>
+            <input type="number" placeholder="Unit Price is sold from." name="unitFrom" id="unitFrom_input" required />
+        </div>
+
+        <div class="input-group">
+            <label>Running Out Alert</label>
+            <input type="number" placeholder="e.g. 10" name="runOut" id="run_input" required >
+        </div>
+
+        <div class="input-group">
+            <label>Selling Price (TZS)</label>
+            <input type="number" placeholder="e.g. 800" name="sellPrice" id="sellPrice_input" required />
+        </div>
+
+        <button class="save-btn" id="send_btn" type="submit">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span id="send_txt">SAVE RECORD</span>
+        </button>
+	        <div class="save-btn" 
+					style="
+					text-align: center;
+					background-color: red;
+					" id="send_btn" type="submit" onclick="displayForm(false);">
+            <i class="fa-solid fa-close"></i>
+            <span id="send_txt">CLOSE</span>
+					</div>
+
+    </form>
+
+
+
+
+
+<!-- NAVIGATION PANE -->
+<br/><br/><br/><br/><br/>
+<nav class="bottom-nav" id="nav"></nav>
+
+
+
+<!-- SCRIPT PART -->
+<script type="text/javascript" src="/main.js"></script>
+<script type="text/javascript" src="/top_form.js"></script>
+<script type="text/javascript">
+	displayForm(false);
+</script>
+<!--
+Fetching user to get total products store
+-->
+<script type="text/javascript" defer>	
+	let product_body = document.getElementById('products_body');
+	let runOut_body = document.getElementById('runOut_body');
+	let product_view = document.getElementById('product_view');
+	let runout_view = document.getElementById('runout_view');
+	let total_products = document.getElementById('total_products');
+	let total_runOut = document.getElementById('total_runOut');
+
+async function getStore() {
+		runout_view.innerHTML = '';
+		product_view.innerHTML = '';
+			try {
+				const res = await fetch('/account/api/user');
+				const data = await res.json();
+					
+					//INCASE STORE LENGTH IS ZERO THEN NO PRODUCTS
+
+				if (data.store.length<=0) {
+						let err = document.createElement('div');
+						err.setAttribute('class', 'zero');
+						let err_txt = document.createElement('div');
+						err_txt.setAttribute('class', 'zero_txt');
+						err_txt.innerHTML = 'Ooops!, No products in Store';
+						err.appendChild(err_txt);
+						let creat = document.createElement('div');
+						creat.setAttribute('class', 'btn');
+						creat.setAttribute('onclick', 'window.location.href="/account/store/add"');
+						creat.innerHTML = 'Add New Stock';
+						err.appendChild(creat);
+						product_view.appendChild(err);
+						//==>Setting all the stuffs to zero like that
+								
+								total_products.innerHTML = 0;
+								total_runOut.innerHTML = 0;
+					}
+					
+
+					//ELSE IF NOT LESS OR EQUAL ZERO..THEN THERE ARE PRODUCTS
+					else if (data.store.length>0){
+						let totalProducts = 0;
+						let totalRunOut = 0;
+							let card = '';
+							let runout_card = '';
+						//STORE LOOP
+						for (var i=0; i<data.store.length; i++) {
+							totalProducts += 1;
+							//CHECKING RUNNING OUT PRODUCTS TO ALSO BE PRESENT IN RUNNING OUT
+							if (data.store[i].qn<=data.store[i].running_out) {
+								totalRunOut += 1;
+								runout_card += 
+							`
+							<div class="product-card">
+							<div class="product-name">${data.store[i].name}</div>
+							<div class="info-row">
+								<span class="label">ID</span>
+								<span class="value">${data.store[i].id}</span>
+							</div>		
+							<div class="info-row">
+								<span class="label">Quantity</span>
+								<span class="value">${data.store[i].qn}</span>
+							</div>				
+							<div class="info-row">
+								<span class="label">Unit Price</span>
+								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Unit From</span>
+								<span class="value">${data.store[i].unitFrom}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Selling Price</span>
+								<span class="value">${data.store[i].sellingPrice}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Running Out</span>
+								<span class="value">${data.store[i].running_out}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Created On</span>
+								<span class="value">${data.store[i].createdAt}</span>
+							</div>
+							<div class="card-actions">
+							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+								<i class="fa fa-pen"></i> Edit
+							</button>
+							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+								<i class="fa fa-trash"></i> Delete
+							</button>
+							</div>
+							</div>
+							`;
+								runout_view.innerHTML = runout_card;
+							}
+							card += 
+							`
+							<div class="product-card">
+							<div class="product-name">${data.store[i].name}</div>
+							<div class="info-row">
+								<span class="label">ID</span>
+								<span class="value">${data.store[i].id}</span>
+							</div>		
+							<div class="info-row">
+								<span class="label">Quantity</span>
+								<span class="value">${data.store[i].qn}</span>
+							</div>				
+							<div class="info-row">
+								<span class="label">Unit Price</span>
+								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Selling Price</span>
+								<span class="value">${data.store[i].sellingPrice}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Running Out</span>
+								<span class="value">${data.store[i].running_out}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Created On</span>
+								<span class="value">${data.store[i].createdAt}</span>
+							</div>
+							<div class="card-actions">
+							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+								<i class="fa fa-pen"></i> Edit
+							</button>
+							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+								<i class="fa fa-trash"></i> Delete
+							</button>
+							</div>
+							</div>
+							`;
+							product_view.innerHTML = card;
+
+						}
+						//AT THE END SUMMING UP WITH VALUES TO BE AT THE TOP
+						total_products.innerHTML = totalProducts;
+						total_runOut.innerHTML = totalRunOut;
+						if (totalRunOut<=0) {
+						let err = document.createElement('div');
+						err.setAttribute('class', 'zero');
+						let err_txt = document.createElement('div');
+						err_txt.setAttribute('class', 'zero_txt');
+						err_txt.innerHTML = 'Ooops!, No products Running Out';
+						err.appendChild(err_txt);
+						let creat = document.createElement('div');
+						creat.setAttribute('class', 'btn');
+						creat.setAttribute('onclick', 'showProducts(true);');
+						creat.innerHTML = 'View Store';
+						err.appendChild(creat);
+						runout_view.appendChild(err);
+
+						}
+					}
+
+
+				}
+				catch (err) {
+					console.log(err.message);
+					flyMSG('err', 'Server Error Occured. Please try again.')
+				}
+			}
+getStore();
+</script>
+<!--
+Showing either products or running out panes when clicked
+-->
+<script type="text/javascript" defer>
+	let products_btn = document.getElementById('products_btn');
+	let runout_btn = document.getElementById('runout_btn');
+function showProducts(opt) {
+	if (opt) {
+		product_body.style.display='block';
+		products_btn.setAttribute('style', 'cursor: default; border: none; border-bottom: 2px solid lime;');
+		runout_btn.setAttribute('style', 'cursor: pointer; border: none;');
+		runOut_body.style.display='none';
+		getStore();
+	}
+	else {
+				runout_btn.setAttribute('style', 'cursor: default; border: none; border-bottom: 2px solid lime;');
+		products_btn.setAttribute('style', 'cursor: pointer; border: none;');
+		product_body.style.display='none';
+		runOut_body.style.display='block';
+		getStore();
+	}
+} 
+showProducts(true);
+</script>
+
+<script type="text/javascript" src="/nav.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadNav('store');
+    });
+</script>
+<!--
+For Deleting process
+-->
+<script type="text/javascript" defer>
+
+async function deleteProof(id) {
+		const userConfirm = confirm("Are you sure you wanna delete?");
+
+		if (userConfirm) {
+			try {
+			const res = await fetch(`/account/store/delete/${id}`, {method: 'DELETE'});
+			const data = await res.json();
+			if (data.problem) {
+				flyMSG('err', data.message);
+			}
+			else {
+				flyMSG('', data.message);
+				displayForm(false);
+				getStore();
+			}
+		}
+		catch (err) {
+			flyMSG('err', 'An Error Occcured. Please try again');
+		}
+		}
+		else {
+			//Do nothing
+		}
+	}
+
+</script>
+
+<!--
+Editing product processess
+-->
+
+
+
+<script type="text/javascript">
+	let id_ = '';
+//let form_ = document.getElementById('form_');
+
+async function editProduct(id) {
+	let name = document.getElementById('name_input');
+	let id__ = document.getElementById('id_input');
+	let qn = document.getElementById('qn_input');
+	let unitPrice = document.getElementById('unitPrice_input');
+	let unitFrom = document.getElementById('unitFrom_input');
+	let runOut = document.getElementById('run_input');
+	let sellPrice = document.getElementById('sellPrice_input');
+	form_.setAttribute('action', `/account/store/edit/${id}`);
+	try {
+		const res = await fetch('/account/api/user');
+		const data = await res.json();
+
+		for (var i=0; i<data.store.length; i++) {
+			if (id.toString()===data.store[i]._id.toString()) {
+				displayForm(true);
+				name.value = data.store[i].name;
+				id__.value = data.store[i].id;
+				qn.value = data.store[i].qn;
+				unitPrice.value = data.store[i].unitPrice;
+				unitFrom.value = data.store[i].unitFrom;
+				runOut.value = data.store[i].running_out;
+				sellPrice.value = data.store[i].sellingPrice;
+				id_ = id;
+			}
+		}
+		}
+		catch (err) {
+			console.log(err.message);
+			flyMSG('err', 'Server Error Occurred. Please try again.')
+		}
+}
+
+
+
+form_.addEventListener('submit', async (e)=>{
+	e.preventDefault();
+	let name = e.target.name.value.trim();
+	let id__ = e.target.id.value.trim();
+	let qn = Number(e.target.qn.value);
+	let unitPrice = Number(e.target.unitPrice.value);
+	let unitFrom = Number(e.target.unitFrom.value);
+	let runOut = Number(e.target.runOut.value);
+	let sellPrice = Number(e.target.sellPrice.value);
+	//alert(`${name} ${qn} ${unitPrice} ${unitFrom} ${runOut} ${sellPrice}`);
+
+	const res = await fetch(`/account/store/edit/${id_}`, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ name, id__, qn, unitPrice, unitFrom, runOut, sellPrice })
+	});
+	const data = await res.json();
+
+	if (data.problem) {
+		flyMSG('err', data.message);
+	}
+	else {
+		flyMSG('', data.message);
+		location.reload(true);
+		form_.reset();
+	}
+
+});
+</script>
+</body>
+</html>

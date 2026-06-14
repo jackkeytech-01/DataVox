@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Daily Record</title>
+
+<link rel="stylesheet" href="daily-record.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+
+.top-bar{
+    height:80px;
+    background:#04295f;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+}
+
+.top-bar h2{
+    font-size:1.05rem;
+}
+
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.2rem;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+main{
+    padding:20px;
+}
+
+/* DATE SELECTOR */
+
+.date-selector{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:12px 15px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+}
+
+.date-selector button{
+
+    background:none;
+    border:none;
+
+    cursor:pointer;
+
+    color:#666;
+}
+
+.current-date{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:600;
+}
+
+/* RECORD CARD */
+
+.record-card{
+
+    background:white;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,.08);
+}
+
+.sales-title{
+
+    color:#14a44d;
+
+    padding:15px;
+
+    font-size:1rem;
+
+    border-bottom:
+    1px solid #eee;
+}
+
+.expense-title{
+
+    color:#ff3b30;
+
+    padding:15px;
+
+    font-size:1rem;
+
+    border-bottom:
+    1px solid #eee;
+}
+
+/* RECORD ITEM */
+
+.record-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-bottom:
+    1px solid #f0f0f0;
+}
+
+.record-row h4{
+    margin-bottom:4px;
+}
+
+.record-row small{
+    color:#777;
+}
+.record-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+}
+
+.record-details h4{
+
+    margin:0;
+
+    font-size:1rem;
+}
+
+.record-details small{
+
+    color:#777;
+
+    font-size:.85rem;
+}
+.amount{
+    font-weight:bold;
+    font-size:1rem;
+}
+
+.green{
+    color:#14a44d;
+}
+
+.red{
+    color:#ff3b30;
+}
+
+/* TOTALS */
+
+.total-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+}
+
+/* PROFIT */
+
+.profit-card{
+
+    background:#eaf9ee;
+
+    border:2px solid #b8e5c0;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.profit-card span{
+
+    font-weight:700;
+
+    color:#0f7d3c;
+}
+
+.profit-card strong{
+
+    color:#14a44d;
+
+    font-size:2rem;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    padding:12px 0;
+
+    box-shadow:
+    0 -3px 10px rgba(0,0,0,.08);
+}
+
+.bottom-nav a{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+    text-decoration:none;
+
+    color:#888;
+
+    font-size:.8rem;
+}
+
+.bottom-nav i{
+    font-size:1.1rem;
+}
+
+.bottom-nav .active{
+    color:#2563eb;
+}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+
+    <button class="icon-btn" onclick="window.history.back();">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h2>DAILY RECORD</h2>
+
+    <button class="icon-btn">
+        <i class="fa-regular fa-calendar"></i>
+    </button>
+
+</header>
+
+<main>
+
+    <!-- DATE NAVIGATION -->
+
+    <div class="date-selector">
+
+        <button>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="current-date">
+
+            <i class="fa-regular fa-calendar"></i>
+
+            <span>03 June 2026</span>
+
+        </div>
+
+        <button>
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+    </div>
+
+    <!-- SALES -->
+
+    <!-- SALES -->
+
+<section class="record-card">
+
+    <h3 class="sales-title">
+        SALES
+    </h3>
+
+    <!-- SALE 1 -->
+
+    <div class="record-row">
+
+        <div class="record-details">
+
+            <h4>Rice</h4>
+
+            <small>
+                Quantity: 5
+            </small>
+
+            <small>
+                Time: 09:15 AM
+            </small>
+
+        </div>
+
+        <span class="amount green">
+            TZS 20,000
+        </span>
+
+    </div>
+
+    <!-- SALE 2 -->
+
+    <div class="record-row">
+
+        <div class="record-details">
+
+            <h4>Sugar</h4>
+
+            <small>
+                Quantity: 3
+            </small>
+
+            <small>
+                Time: 11:20 AM
+            </small>
+
+        </div>
+
+        <span class="amount green">
+            TZS 15,000
+        </span>
+
+    </div>
+
+    <!-- SALE 3 -->
+
+    <div class="record-row">
+
+        <div class="record-details">
+
+            <h4>Cooking Oil</h4>
+
+            <small>
+                Quantity: 2
+            </small>
+
+            <small>
+                Time: 01:05 PM
+            </small>
+
+        </div>
+
+        <span class="amount green">
+            TZS 18,000
+        </span>
+
+    </div>
+
+    <div class="total-row">
+
+        <strong>
+            Total Sales
+        </strong>
+
+        <strong class="green">
+            TZS 53,000
+        </strong>
+
+    </div>
+
+</section>
+
+
+    <!-- EXPENSES -->
+
+    <section class="record-card">
+
+        <h3 class="expense-title">
+            EXPENSES
+        </h3>
+
+        <div class="record-row">
+            <div>
+                <h4>Transport</h4>
+                <small>01:30 PM</small>
+            </div>
+
+            <span class="amount red">
+                5,000
+            </span>
+        </div>
+
+        <div class="total-row">
+
+            <strong>Total Expenses</strong>
+
+            <strong class="red">
+                5,000
+            </strong>
+
+        </div>
+
+    </section>
+
+    <!-- PROFIT -->
+
+    <section class="profit-card">
+
+        <span>PROFIT</span>
+
+        <strong>
+            30,000
+        </strong>
+
+    </section>
+
+</main>
+
+<nav class="bottom-nav">
+
+    <a href="#">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="#" class="active">
+        <i class="fa-solid fa-book"></i>
+        <span>Records</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-chart-column"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+    </a>
+
+</nav>
+
+</body>
+</html>

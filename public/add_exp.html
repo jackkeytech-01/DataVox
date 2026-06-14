@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Expense</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+
+.top-bar{
+    height:80px;
+    background:#04295f;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+}
+
+.top-bar h2{
+    font-size:1.1rem;
+    font-weight:600;
+}
+
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.3rem;
+    cursor:pointer;
+}
+
+/* CONTENT */
+
+.container{
+    padding:20px;
+}
+
+/* FORM CARD */
+
+.form-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,.08);
+}
+
+/* INPUT GROUP */
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #d8dce3;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:1rem;
+
+    background:#fff;
+}
+
+.input-group input:focus{
+
+    border-color:#ef4444;
+}
+
+/* TIME INPUT */
+
+.time-wrapper{
+
+    position:relative;
+}
+
+.time-wrapper i{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#777;
+}
+
+/* BUTTON */
+
+.save-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:10px;
+
+    transition:.3s;
+}
+
+.save-btn:hover{
+
+    background:#dc2626;
+}
+
+.save-btn i{
+    margin-right:8px;
+}
+
+/* NAVIGATION */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    padding:12px 0;
+
+    box-shadow:
+    0 -3px 10px rgba(0,0,0,.08);
+}
+
+.bottom-nav a{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+    text-decoration:none;
+
+    color:#888;
+
+    font-size:.8rem;
+}
+
+.bottom-nav i{
+    font-size:1.1rem;
+}
+
+.bottom-nav .active{
+    color:#2563eb;
+}
+
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+
+    <button
+    class="icon-btn"
+    onclick="window.history.back()">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+    </button>
+
+    <h2>ADD EXPENSE</h2>
+
+    <div></div>
+
+</header>
+
+<div class="container">
+
+    <div class="form-card">
+
+        <div class="input-group">
+
+            <label>
+                Expense Description
+            </label>
+
+            <input
+            type="text"
+            placeholder="e.g. Transport">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Amount (TZS)
+            </label>
+
+            <input
+            type="number"
+            placeholder="e.g. 5000">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input
+                type="time">
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+
+        <button class="save-btn">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            SAVE EXPENSE
+
+        </button>
+
+    </div>
+
+</div>
+
+<nav class="bottom-nav">
+
+    <a href="#">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="#" class="active">
+        <i class="fa-solid fa-book"></i>
+        <span>Records</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-chart-column"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+    </a>
+
+</nav>
+
+</body>
+</html>

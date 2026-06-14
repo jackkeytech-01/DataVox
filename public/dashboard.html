@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+
+.top-bar{
+    height:80px;
+    background:#04295f;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+}
+
+.top-bar h2{
+    font-size:1.1rem;
+    letter-spacing:1px;
+}
+
+.icon-btn{
+    border:none;
+    background:none;
+    color:white;
+    font-size:1.3rem;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+main{
+    padding:20px;
+}
+
+/* DATE */
+
+.date-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:20px;
+
+    color:#666;
+    font-weight:600;
+}
+
+/* CARDS */
+
+.card{
+    background:white;
+
+    border-radius:16px;
+
+    padding:15px;
+
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:15px;
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,.08);
+}
+
+.card-icon{
+    width:55px;
+    height:55px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-size:1.3rem;
+}
+
+.green{
+    background:#15b45d;
+}
+
+.red{
+    background:#ff3b30;
+}
+
+.blue{
+    background:#2563eb;
+}
+
+.card-info p{
+    color:#666;
+    margin-bottom:6px;
+}
+
+.card-info h3{
+    color:#15b45d;
+    font-size:1.5rem;
+}
+
+.red-text{
+    color:#ff3b30 !important;
+}
+
+.blue-text{
+    color:#2563eb !important;
+}
+
+/* BUTTONS */
+
+.action-btn{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    text-decoration:none;
+    color:white;
+
+    padding:16px;
+
+    border-radius:12px;
+
+    margin-bottom:12px;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+}
+
+.green-btn{
+    background:#16c35b;
+}
+
+.red-btn{
+    background:#ff3b30;
+}
+
+.blue-btn{
+    background:#2563eb;
+}
+
+.purple-btn{
+    background:#8b5cf6;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    padding:12px 0;
+
+    box-shadow:
+    0 -3px 10px rgba(0,0,0,.08);
+}
+
+.bottom-nav a{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    color:#8a8a8a;
+
+    gap:5px;
+
+    font-size:.8rem;
+}
+
+.bottom-nav i{
+    font-size:1.2rem;
+}
+
+.bottom-nav a.active{
+    color:#2563eb;
+}
+</style>
+
+</head>
+<body>
+
+<header class="top-bar">
+
+    <button class="icon-btn">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <h2>DASHBOARD</h2>
+
+    <button class="icon-btn">
+        <i class="fa-regular fa-bell"></i>
+    </button>
+
+</header>
+
+<main>
+
+    <div class="date-box">
+        <i class="fa-regular fa-calendar"></i>
+        <span>03 June 2026</span>
+    </div>
+
+    <!-- SALES -->
+
+    <div class="card">
+
+        <div class="card-icon green">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <div class="card-info">
+
+            <p>Today's Sales</p>
+
+            <h3>TZS 150,000</h3>
+
+        </div>
+
+    </div>
+
+    <!-- EXPENSES -->
+
+    <div class="card">
+
+        <div class="card-icon red">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+        <div class="card-info">
+
+            <p>Today's Expenses</p>
+
+            <h3 class="red-text">TZS 30,000</h3>
+
+        </div>
+
+    </div>
+
+    <!-- PROFIT -->
+
+    <div class="card">
+
+        <div class="card-icon blue">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+        </div>
+
+        <div class="card-info">
+
+            <p>Today's Profit</p>
+
+            <h3 class="blue-text">TZS 120,000</h3>
+
+        </div>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+
+    <a href="#" class="action-btn green-btn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        ADD SALE
+
+    </a>
+
+    <a href="#" class="action-btn red-btn">
+
+        <i class="fa-solid fa-minus"></i>
+
+        ADD EXPENSE
+
+    </a>
+
+    <a href="#" class="action-btn blue-btn">
+
+        <i class="fa-solid fa-list"></i>
+
+        VIEW RECORDS
+
+    </a>
+
+    <a href="#" class="action-btn purple-btn">
+
+        <i class="fa-solid fa-chart-pie"></i>
+
+        REPORTS
+
+    </a>
+
+</main>
+
+<nav class="bottom-nav">
+
+    <a href="#" class="active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-book"></i>
+        <span>Records</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-chart-column"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+    </a>
+
+</nav>
+
+</body>
+</html>

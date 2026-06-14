@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Record</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#07192e;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+.top-bar{
+    height:80px;
+    background:#04295f;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+}
+.top-bar h2{
+    font-size:1.1rem;
+    font-weight:600;
+}
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.3rem;
+    cursor:pointer;
+}
+
+/* CONTENT */
+.container{
+    padding:20px;
+}
+
+/* FORM CARD */
+.form-card{
+    background:transparent;
+    backdrop-filter: blur(100px);
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+/* INPUT GROUP */
+.input-group{
+    margin-bottom:20px;
+}
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:antiquewhite;
+}
+.input-group input, .input-group select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d8dce3;
+    border-radius:10px;
+    outline:none;
+    font-size:1rem;
+    background: inherit;
+    color: sienna;
+}
+.input-group input:focus, .input-group select:focus{
+    border-color:#2563eb;
+}
+
+/* BUTTON */
+.save-btn{
+    width:100%;
+    border:none;
+    background:#16a34a;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+    transition:.3s;
+}
+.save-btn:hover{
+    background:#12833b;
+}
+.save-btn i{
+    margin-right:8px;
+}
+
+/* NAVIGATION */
+</style>
+<link rel="stylesheet" type="text/css" href="/nav.css"/>
+<link rel="stylesheet" type="text/css" href="/main.css"/>
+</head>
+<body onload="loadNames();">
+
+<header class="top-bar">
+    <button class="icon-btn" onclick="window.location.href='/account/store';">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h2>ADD STOCK RECORD</h2>
+    <div></div>
+</header>
+<div class="fly_message" id="fly_message">
+</div>
+<div class="container">
+    <form class="form-card" id="form">
+
+        <div class="input-group">
+            <label>Product Name</label>
+        <input list="names"  name="name" placeholder="Product Name">
+
+        <datalist id="names">
+            <!--
+                <option value="Reading">
+                <option value="Gaming">
+                <option value="Cooking">
+                <option value="Gardening">
+                -->
+        </datalist>
+
+        </div>
+
+        <div class="input-group">
+            <label>Product Unique ID</label>
+            <input type="text" placeholder="Product ID" name="id"  required />
+        </div>
+
+        <div class="input-group">
+            <label>Quantity</label>
+            <input type="number" placeholder="e.g. 50" name="qn"  required />
+        </div>
+
+        <div class="input-group">
+            <label>Unit Price (TZS)</label>
+            <input type="number" placeholder="e.g. 500" name="unitPrice"  required />
+        </div>
+
+        <div class="input-group">
+            <label>Unit From</label>
+            <input type="number" placeholder="Unit Price is sold from." name="unitFrom"  required />
+        </div>
+
+        <div class="input-group">
+            <label>Running Out Alert</label>
+            <input type="number" placeholder="e.g. 10" name="runOut"  required >
+        </div>
+
+        <div class="input-group">
+            <label>Selling Price (TZS)</label>
+            <input type="number" placeholder="e.g. 800" name="sellPrice" required />
+        </div>
+
+        <div class="input-group">
+            <label>Time</label>
+            <input type="text" id="time" readonly=true name="time" required />
+        </div>
+
+        <button class="save-btn" id="send_btn" type="submit"/>
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span id="send_txt">SAVE RECORD</span>
+        </button>
+
+    </form>
+</div>
+
+<nav class="bottom-nav" id="nav">
+ </nav>
+<script type="text/javascript" src="/nav.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadNav('records');
+    });
+</script>
+<script type="text/javascript" src="/main.js"></script>
+<script type="text/javascript">
+function updateTime() {
+  let now = new Date();
+  const hours = now.getHours().toString().padStart(2, 0);
+  const minutes = now.getMinutes().toString().padStart(2, 0);
+  const seconds = now.getSeconds().toString().padStart(2, 0);
+  const today = now.toDateString();
+  const timer = `${hours}:${minutes}:${seconds}`;
+  const _time = `${timer} ${today}`;
+  document.getElementById('time').value = _time;
+}
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+<script type="text/javascript">
+    let form = document.getElementById('form');
+    let send_btn = document.getElementById('send_btn');
+    let send_txt = document.getElementById('send_txt');
+
+    form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        send_btn.disabled=true;
+        send_txt.textContent = 'Saving...';
+        const name = e.target.name.value.trim();
+        const id__ = e.target.id.value;
+        const qn = Number(e.target.qn.value);
+        const unitPrice = Number(e.target.unitPrice.value);
+        const unitFrom = Number(e.target.unitFrom.value);
+        const runOut = Number(e.target.runOut.value);
+        const sellPrice = Number(e.target.sellPrice.value);
+        const time = e.target.time.value;
+        //alert(`${name} : ${qn} : ${unitPrice} : ${unitFrom} : ${runOut} : ${sellPrice} : ${time}`);
+        const res = await fetch('/account/store/add', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, id__, qn, unitPrice, unitFrom, runOut, sellPrice, time })
+        })
+        const data = await res.json();
+            if (data.problem) {
+                flyMSG('err', data.message);
+                send_btn.disabled=false;
+                send_txt.textContent='SAVE RECORD';
+                return;
+            }
+        flyMSG('', data.message);
+        send_btn.disabled=false;
+        send_txt.textContent='SAVE RECORD';
+        form.reset();
+        loadNames();
+    })
+ 
+async function loadNames() {
+    let namesContainer = document.getElementById('names');
+    namesContainer.replaceChildren();
+    try {
+        const res = await fetch('/account/api/user');
+        const data = await res.json();
+        for (var i=0; i<data.names.length; i++) {
+            let option = document.createElement('option');
+            option.value = data.names[i];
+            namesContainer.appendChild(option);
+        }
+    }
+    catch (err) {
+        console.log(err.message);
+        flyMSG('err','Server Error Occurred. \n Failed to load Names')
+    }
+}
+
+</script>
+</body>
+</html>

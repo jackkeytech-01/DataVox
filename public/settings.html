@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="/main.css" type="text/css"/>
+  <link rel="stylesheet" href="/settings.css" type="text/css"/>
+</head>
+<body>
+  <div class="info">
+    <form method="post" id="form">
+        <input oninput="saveBTN();" class="input" id="name" type="text" name="name" value="Your Name"/>
+
+      
+        <center>
+        <div onclick="security(true);" id="_btn" class="btn">
+          Change Password
+        </div>
+      </center>
+      
+
+      <div class="security" id="security">
+        <input oninput="saveBTN();" class="input"  type="password" placeholder="Current Password" name="password"/>
+        <input oninput="saveBTN();" class="input"  type="password" placeholder="New Password" name="password1"/>
+        <input oninput="saveBTN();" class="input"  type="password" placeholder="Confirm Password" name="password2"/>
+      </div>
+
+      <input id="send_btn" class="input" type="submit" value="Save"/>
+  <div class="btn" onclick="window.history.back();" style="width: 100%; background-color: purple; text-align: center; margin: 2%;">Back</div>
+    </form>
+  </div>
+  <div class="fly_message" id="fly_message">
+  </div>
+  <script type="text/javascript" src="/main.js"></script>
+  <script type="text/javascript">
+    let name = document.getElementById('name');
+    async function getUserInfo() {
+      try {
+      const res = await fetch('/account/api/user');
+      const data = await res.json();
+      document.title = 'Settings';
+      name.value = data.name;
+    }
+    catch (err) {
+      console.log(err.message);
+      flyMSG('err',"Server Error Occured");
+    }
+    }
+    getUserInfo();
+  </script>
+  <script type="text/javascript">
+    let form = document.getElementById('form');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const password = e.target.password.value;
+      const password1 = e.target.password1.value;
+      const password2 = e.target.password2.value;
+      let old_pass = Boolean(!password);
+      let new_pass = Boolean(!password1);
+      let confirm = Boolean(!password2);
+      
+      //alert(`Name: ${name}\nPassword: ${password}`);
+      if (!name) {
+        return flyMSG('err','Sorry Please Fill Name field');
+      }
+      //User filling new password and confirm field living old password empty
+      else if (old_pass===true && new_pass===false && confirm===false) {
+        flyMSG('err', 'Please Fill Old password');
+      }
+      //User leaving confirm password field 
+      else if (old_pass===false && new_pass===false && confirm===true) {
+        flyMSG('err', 'Please confirm the new password');
+      }
+      //User forgets to fill new password field
+      else if (old_pass===false && new_pass===true && confirm===false) {
+        flyMSG('err','Please fill New Password Field');
+      }
+      else if (
+        (old_pass===true && new_pass===true && confirm===true) 
+        || 
+        (old_pass===false && new_pass===false && confirm===false)
+        ) {
+
+      try {
+      const res = await fetch('/account/updateProfile',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, password, password1, password2 })
+      });
+      const data = await res.json();
+
+      if (data.problem) {
+        flyMSG('err', data.message);
+      }
+      else {
+        flyMSG('', data.message);
+        form.reset();
+        getUserInfo();
+        security(false);
+        send_btn.setAttribute('style','display: none !important;');
+      }
+    } catch (err) {
+      console.log(err.message);
+      flyMSG('err', 'Server Error Occurred');
+      }
+    }
+    })
+  
+    
+  </script>
+  <script type="text/javascript">
+    let _btn = document.getElementById('_btn');
+    let send_btn = document.getElementById('send_btn');
+    let field = document.getElementById('security');
+    security(false);
+    send_btn.setAttribute('style','display: none !important;');
+    function security(option) {
+      if (option) {
+        _btn.classList.add('inactive');
+        _btn.innerHTML = 'Close';
+        _btn.setAttribute('onclick', 'security(false);');
+        field.setAttribute('style', 'display: block;');
+      }
+      else {
+        _btn.classList.remove('inactive');
+        _btn.innerHTML = 'Change password';
+        _btn.setAttribute('onclick', 'security(true);');
+        field.setAttribute('style', 'display: none;')
+      }
+    }
+    function saveBTN() {
+      send_btn.setAttribute('style','display: block !important;')
+    }
+  </script>
+</body>
+</html>

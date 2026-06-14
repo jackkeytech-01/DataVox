@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Daily Record</title>
+
+<link rel="stylesheet" href="daily-record.css">
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+body{
+background:#07192e;
+color:white;
+}
+
+body{
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+
+.top-bar{
+    height:80px;
+    background:#04295f;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+}
+
+.top-bar h2{
+    font-size:1.05rem;
+}
+
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:1.2rem;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+main{
+    padding:20px;
+}
+
+/* DATE SELECTOR */
+
+.date-selector{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background:#10253f;
+
+    border-radius:12px;
+
+    padding:12px 15px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+    color: #fff;
+}
+
+.date-selector button{
+
+    background:none;
+    border:none;
+
+    cursor:pointer;
+
+    color: transparent;
+}
+
+.current-date{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:600;
+}
+
+/* RECORD CARD */
+
+.record-card{
+
+    background:#10253f;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,.08);
+}
+
+.sales-title{
+
+    color:#14a44d;
+
+    padding:15px;
+
+    font-size:1rem;
+
+    border-bottom:
+    1px solid #eee;
+}
+
+.expense-title{
+
+    color:#ff3b30;
+
+    padding:15px;
+
+    font-size:1rem;
+
+    border-bottom:
+    1px solid #eee;
+}
+
+/* RECORD ITEM */
+
+.record-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-bottom:
+    1px solid #f0f0f0;
+}
+
+.record-row h4{
+    margin-bottom:4px;
+}
+
+.record-row small{
+    color:#777;
+}
+.record-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+}
+
+.record-details h4{
+
+    margin:0;
+
+    font-size:1rem;
+}
+
+.record-details small{
+
+    color:#777;
+
+    font-size:.85rem;
+}
+.amount{
+    font-weight:bold;
+    font-size:1rem;
+}
+
+.green{
+    color:#14a44d;
+}
+
+.red{
+    color:#ff3b30;
+}
+.record-lists {
+    overflow-y: scroll;
+    height: 264px;
+    width: 100%;
+}
+.controls_ {
+    width: fit-content;
+    margin: 0;
+}
+.btn {
+    margin: 0;
+}
+.btn.edit {
+    background: transparent;
+    color: green;
+    margin-bottom: 1.5%;
+}
+.btn.delete {
+    background: transparent;
+    color: red;
+    margin-top: 1.5%;
+}
+/* TOTALS */
+
+.total-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+}
+
+/* PROFIT */
+
+.profit-card{
+
+    background:#eaf9ee;
+
+    border:2px solid #b8e5c0;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.profit-card span{
+
+    font-weight:700;
+
+    color:#0f7d3c;
+}
+
+.profit-card strong{
+
+    color:#14a44d;
+
+    font-size:2rem;
+}
+
+
+.main_controls {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    bottom: 15%;
+    right: 5%;
+    z-index: 9999;
+}
+.ctrl {
+    background: transparent;
+    border: none;
+    border-radius: 50% 50%;
+    width: fit-content !important;
+    height: fit-content !important;
+    padding: 1% !important;
+    font-size: 2em !important;
+    font-weight: bolder;
+}
+.ctrl.sale {
+    color: green;
+    cursor: pointer;
+}
+.ctrl.exp {
+    color: red;
+    cursor: pointer;
+}
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    padding:12px 0;
+
+    box-shadow:
+    0 -3px 10px rgba(0,0,0,.08);
+}
+
+.bottom-nav a{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+    text-decoration:none;
+
+    color:#888;
+
+    font-size:.8rem;
+}
+
+.bottom-nav i{
+    font-size:1.1rem;
+}
+
+.bottom-nav .active{
+    color:#2563eb;
+}
+
+/*FORM*/
+.container{
+    padding:20px;
+}
+
+/* FORM CARD */
+
+.form-card{
+
+    background-image: linear-gradient(to right, rgb(0, 128, 0, 0.8), rgb(0, 100, 100), rgb(100, 100, 100) );
+
+    color: white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,.08);
+
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+.form-card.hide {
+    display: none;
+}
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+.input-group input,
+.input-group select{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #d8dce3;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:1rem;
+
+    background:#fff;
+}
+
+.input-group input:focus{
+
+    border-color:#2563eb;
+}
+
+.time-wrapper{
+
+    position:relative;
+}
+
+.time-wrapper i{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#777;
+}
+
+.save-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#16a34a;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:10px;
+
+    transition:.3s;
+}
+.save-btn.exp {
+    background: red;
+}
+.save-btn:hover{
+
+    background:#12833b;
+}
+
+.save-btn i{
+    margin-right:8px;
+}
+</style>
+<link rel="stylesheet" href="/main.css" type="text/css"/>
+<link rel="stylesheet" href="/nav.css" type="text/css"/>
+</head>
+<body onload="loadID('<%=idCarrier%>');">
+
+<header class="top-bar">
+
+    <button class="icon-btn" onclick="window.location.href='/account/records';">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h2>DAILY RECORD</h2>
+
+    <button class="icon-btn">
+        <i class="fa-regular fa-calendar"></i>
+    </button>
+
+</header>
+
+<main>
+
+    <!-- DATE NAVIGATION -->
+
+    <div class="date-selector">
+
+        <button>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="current-date">
+
+            <i class="fa-regular fa-calendar"></i>
+
+            <span><%= info.title %></span>
+
+        </div>
+
+        <button>
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+    </div>
+
+    <!-- SALES -->
+
+    <!-- SALES -->
+
+<section class="record-card">
+
+    <h3 class="sales-title">
+        SALES
+    </h3>
+    <div class="record-lists">
+    <!-- SALE 1 -->
+     <% if (info.sales.length<=0) {%>
+        <br/><br/>
+        <div style="color: red; text-align: center;">
+            No Sales Available
+        </div>
+        <center>
+            <div style="border: none; padding: 2%; padding-left: 3%; padding-right: 3%; width: fit-content; background: green; color: white; text-align: center; border-radius: 15px; cursor: pointer;" onclick="showSale(true);">
+                ADD SALE
+            </div>
+        </center>
+<% } else { for (var i=0; i<info.sales.length; i++) {%>
+        <div class="record-row">
+
+        <div class="record-details">
+
+            <h4><%= info.sales[i].name %></h4>
+            <small>
+                ID: <%= info.sales[i].id %>
+            </small>
+            <small>
+                Quantity: <%= info.sales[i].qn %>
+            </small>
+
+            <small>
+                Time: <%= info.sales[i].createdAt %>
+            </small>
+
+        </div>
+
+        <span class="amount green">
+            <%= info.sales[i].cost %>
+        </span>
+<div class="controls_">
+    <div class="btn edit" onclick="editSale('<%= info.sales[i]._id %>');"><i class="fa-solid fa-pen"></i></div>
+    <div class="btn delete" onclick="deleteSale('<%= info.sales[i]._id %>');"><i class="fa-solid fa-trash"></i></div>
+</div>
+    </div>
+
+    <%} }%>
+</div>
+    <div class="total-row">
+
+        <strong>
+            Total Sales
+        </strong>
+
+        <strong class="green">
+            <%= sale_total %>
+        </strong>
+
+    </div>
+
+</section>
+
+
+    <!-- EXPENSES -->
+
+    <section class="record-card">
+
+        <h3 class="expense-title">
+            EXPENSES
+        </h3>
+        <div class="record-lists">
+            <% if (info.expense.length<=0) {%>
+                <br/><br/>
+                <div style="color: green; text-align: center;">
+            No Expense Available
+        </div>
+        <center>
+            <div style="border: none; padding: 2%; padding-left: 3%; padding-right: 3%; width: fit-content; background: red; color: white; text-align: center; border-radius: 60px; cursor: pointer;" onclick="showExp(true);">
+                ADD EXPENSE
+            </div>
+        </center>
+            <%} else { for (var i=0; i<info.expense.length; i++) {%>
+                <div class="record-row">
+            <div>
+                <h4><%= info.expense[i].title %></h4>
+                <small><%= info.expense[i].createdAt %></small>
+            </div>
+
+            <span class="amount red">
+                <%= info.expense[i].cost %>
+            </span>
+<div class="controls_">
+    <div class="btn edit" onclick="editExp('<%= info.expense[i]._id %>');"><i class="fa-solid fa-pen"></i></div>
+    <div class="btn delete" onclick="deleteExp('<%= info.expense[i]._id %>');"><i class="fa-solid fa-trash"></i></div>
+</div>
+        </div>
+            <%}}%>
+        
+    </div>
+        <div class="total-row">
+
+            <strong>Total Expenses</strong>
+
+            <strong class="red">
+                <%= exp_total %>
+            </strong>
+
+        </div>
+
+    </section>
+
+    <!-- PROFIT -->
+
+    <section class="profit-card">
+
+        <span>NET</span>
+
+        <strong>
+            <%= net %>
+        </strong>
+
+    </section>
+
+</main>
+
+
+<!--
+
+======>>>>FORMS AREA
+
+-->
+    <form class="form-card" id="sale-form" method="post">
+
+        <div class="input-group">
+
+            <label>
+                Product Name
+            </label>
+
+            <select type="text" id="productsName" oninput="updateID();" name="name" required>
+        </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Product ID
+            </label>
+
+            <select type="text" id="productsID" oninput="updateTotal();" name="id" required>
+        </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Quantity
+            </label>
+
+            <input
+            type="number"
+            placeholder="e.g. 5" name="qn" id="qn" oninput="updateTotal();" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number"
+            placeholder="e.g. 20000" id="total" name="total" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="clock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+
+        <button class="save-btn">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            SAVE SALE
+
+        </button>
+
+        <button class="save-btn exp" type="reset" onclick="showSale(false);">
+
+            <i class="fa-solid fa-close"></i>
+
+            CLOSE
+
+        </button>
+
+    </form>
+
+<!--
+Expense form
+-->
+    <form class="form-card" id="exp-form" method="post">
+
+        <div class="input-group">
+
+            <label>
+                Title
+            </label>
+
+            <input
+            type="text"
+            placeholder="e.g. Food" name="title" id="qn" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number"
+            placeholder="e.g. 20000" name="cost" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="exp_clock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+
+        <button class="save-btn exp">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            SAVE EXPENSE
+
+        </button>
+
+        <button class="save-btn exp" type="reset" onclick="showExp(false);">
+
+            <i class="fa-solid fa-close"></i>
+
+            CLOSE
+
+        </button>
+
+    </form>
+
+
+
+<!--
+=================>EDITING FORMS (SALES) AND (EXPENSE)    
+-->
+<!--
+====>SALES EDIT FORM
+-->
+<form class="form-card" id="edit-sale-form" method="post">
+    <center>
+        <h2>
+            Edit Sale
+        </h2>
+    </center>
+        <div class="input-group">
+
+            <label>
+                Product Name
+            </label>
+
+            <input type="text" id="EditproductsName" readonly="true" name="name" style="cursor: not-allowed;" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Product ID
+            </label>
+
+            <input type="text" id="EditproductsID" readonly="true" name="id" style="cursor: not-allowed;" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Quantity
+            </label>
+
+            <input
+            type="number"
+            placeholder="e.g. 5" name="qn" id="Editqn" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number"
+            placeholder="e.g. 20000" id="Edittotal" name="total" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="Editclock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+
+        <button class="save-btn">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            SAVE SALE
+
+        </button>
+
+        <button class="save-btn exp" type="reset" onclick="showEditSale(false);">
+
+            <i class="fa-solid fa-close"></i>
+
+            CLOSE
+
+        </button>
+
+    </form>
+
+<!--
+====>Expense form    
+-->
+<form class="form-card" id="edit-exp-form" method="post">
+    <center>
+        <h2>Edit Expense</h2>
+    </center>
+        <div class="input-group">
+
+            <label>
+                Title
+            </label>
+
+            <input
+            type="text"
+            placeholder="e.g. Food" name="title" id="EditTitle" required/>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number"
+            placeholder="e.g. 20000" name="cost" id="EditCost" required/>
+
+        </div>
+
+        <div class="input-group">
+            <!--
+            <label>
+                Time
+            </label>
+        -->
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="edit_exp_clock" style="display: none;" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+
+        <button class="save-btn exp">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            SAVE EXPENSE
+
+        </button>
+
+        <button class="save-btn exp" type="reset" onclick="showEditExp(false);">
+
+            <i class="fa-solid fa-close"></i>
+
+            CLOSE
+
+        </button>
+
+    </form>
+
+<!--
+=====>>>END OF FORM AREA
+-->
+
+<div class="main_controls">
+    <div class="ctrl sale" onclick="showSale(true);">
+        +
+    </div>
+    <div class="ctrl exp" onclick="showExp(true);">
+        +
+    </div>
+</div>
+
+<div class="fly_message" id="fly_message">
+</div>
+<nav class="bottom-nav" id="nav">
+</nav>
+
+
+
+<!--
+=====>SCRIPT ZONE
+-->
+<script type="text/javascript" src="/nav.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadNav('records');
+    updateID();
+    });
+</script>
+<script src="/main.js" type="text/javascript"></script>
+<script type="text/javascript" defer>
+    let edit_sale_form = document.getElementById('edit-sale-form');
+    let edit_exp_form = document.getElementById('edit-exp-form');
+    showEditExp(false);
+    showEditSale(false);
+    function showEditSale(opt) {
+        if (opt) {
+            showEditExp(false);
+            edit_sale_form.classList.remove('hide');
+        }
+        else {
+            edit_sale_form.classList.add('hide');
+        }
+    }
+    function showEditExp(opt) {
+        if (opt) {
+            showEditSale(false);
+            edit_exp_form.classList.remove('hide');
+        }
+        else {
+            edit_exp_form.classList.add('hide');
+        }
+    }
+</script>
+<script type="text/javascript">
+    let sale_form = document.getElementById('sale-form');
+    let exp_form = document.getElementById('exp-form');
+    function showSale(opt) {
+        if (opt) {
+        showExp(false);
+            sale_form.classList.remove('hide');
+        }
+        else {
+            sale_form.classList.add('hide');
+        }
+    }
+    function showExp(opt) {
+        if (opt) {
+            showSale(false);
+            exp_form.classList.remove('hide');
+        }
+        else {
+            exp_form.classList.add('hide');
+        }
+    }
+</script>
+<script type="text/javascript">
+showSale(false); 
+showExp(false);
+</script>
+<script type="text/javascript">
+let selector = document.getElementById('productsName');
+async function getRecords() {
+    try {
+const res = await fetch('/account/api/user');
+const data = await res.json();
+for (var i=0; i<data.names.length; i++) {
+    let option = document.createElement('option');
+    option.setAttribute('value', `${data.names[i]}`);
+    option.innerHTML = data.names[i];
+    selector.appendChild(option)
+}
+}
+ catch (err) {
+    flyMSG('err' , 'Server Error Occurred.')
+ }
+}
+getRecords();
+    async function updateTotal() {
+        try {
+        const res = await fetch('/account/api/user');
+        const data = await res.json();
+        let _name = document.getElementById('productsName').value;
+        let id_bar = document.getElementById('productsID').value;
+        let qn = Number(document.getElementById('qn').value);
+        let total = document.getElementById('total');
+
+        if (isNaN(qn)) {
+            flyMSG('err', 'Data Input Error. Please try again.');
+        }
+        else {
+            for (var i=0; i<data.store.length; i++) {
+                if (
+                (data.store[i].name===_name)
+                 &&
+                (data.store[i].id===id_bar)
+                ) 
+                {
+                    //Get unitFrom qn and chack
+                    if (qn>=data.store[i].unitFrom) {
+                        let _total = qn*data.store[i].unitPrice;
+                        total.value = `${_total}`;
+                    }
+                    else {
+                        let _total = qn*data.store[i].sellingPrice;
+                        total.value = `${_total}`;
+                    }
+                }
+            }
+        }
+    }
+    catch (err) {
+        console.log(err.message);
+    }
+    }
+
+    async function updateID() {
+        let name_bar = document.getElementById('productsName').value;
+        let id_bar = document.getElementById('productsID');
+        id_bar.replaceChildren();
+        try {
+            const _user = await fetch('/account/api/user');
+            const data = await _user.json();
+            //Get products with similar name to get their ID's
+            for (var i=0; i<data.store.length; i++) {
+                if (data.store[i].name===name_bar) {
+                    let option = document.createElement('option');
+                    option.setAttribute('value', `${data.store[i].id}`);   
+                    option.innerHTML = data.store[i].id;
+                    id_bar.appendChild(option);
+                }
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+let idCarrier = '';
+let storeID = '';
+let newQN = '';
+//Get the main dailyRecord id
+function loadID(id) {
+    idCarrier = id;
+}
+    sale_form.addEventListener('submit', async (e)=>{
+        try {
+        e.preventDefault();
+        const name = e.target.name.value.trim();
+        const id__ = e.target.id.value;
+        const qn = Number(e.target.qn.value);
+        const total = Number(e.target.total.value);
+        const time = e.target.time.value;
+
+        //First Passing the data to various statements
+            //Fetching data from user to get target
+            const _user = await fetch('/account/api/user');
+            const _record = await _user.json();
+
+        for (var i=0; i<_record.store.length; i++) 
+        {
+            if (
+                    name.toString().toLowerCase()===_record.store[i].name.toString().toLowerCase()
+                        &&
+                    qn>_record.store[i].qn
+                ) {
+                flyMSG('err', 'Quantity out of range...');
+                }
+            if (
+                (id__.toString().toLowerCase()===_record.store[i].id.toString().toLowerCase())
+                        &&
+                    (qn<_record.store[i].qn)
+                ) {
+
+                    storeID = _record.store[i]._id.toString();
+                    newQN = Number(_record.store[i].qn) - Number(qn);
+                    
+            }
+            }
+        const res = await fetch(`/account/records/edit/add/sale`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ storeID, idCarrier, newQN, name, id__,qn, total, time })
+                    });
+        const data = await res.json();
+
+        if (data.problem) {
+            flyMSG('err', data.message);
+         }
+        else {
+            flyMSG('', data.message);
+            sale_form.reset;
+            location.reload(true);
+        }
+    } catch (err) {
+        console.log(err.message);
+        flyMSG('err', 'Server Error occurred. Please try again...');
+    }
+    });
+
+exp_form.addEventListener('submit', async (e)=>{
+    let found = false;
+    let exp_sn = 0;
+    let record_sn = 0;
+        e.preventDefault();
+    try {
+        const title = e.target.title.value.trim();
+        const cost = Number(e.target.cost.value);
+        const time = e.target.time.value;
+        //alert(`${title} : ${cost} : ${time}`);
+        //Checking if the expense was already there
+        const user_ = await fetch('/account/api/user');
+        const _user = await user_.json();
+
+        const res = await fetch('/account/records/edit/add/exp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idCarrier, title, cost, time })
+        })
+        const data = await res.json();
+
+        if (data.problem) {
+            flyMSG('err', data.message);
+        }
+        else {
+            flyMSG('', data.message);
+            exp_form.reset();
+            location.reload(true);
+        }
+    }
+    catch (err) {
+        console.log(err.message);
+        flyMSG('err', 'Server Error Occurred. Please try again.');
+    }
+});
+</script>
+
+<script type="text/javascript">
+    let targetSaleID = '';
+    let recordSN = 0;
+    let saleSN = 0;
+    let expSN = 0;
+    let initialQN = 0;
+    let initialCost = 0;
+    let edit_name = document.getElementById('EditproductsName');
+    let edit_id = document.getElementById('EditproductsID');
+    let edit_qn = document.getElementById('Editqn');
+    let edit_cost = document.getElementById('Edittotal');
+    let edit_clock = document.getElementById('Editclock');
+    let sale_edit_form = document.getElementById('edit-sale-form');
+    async function editSale(id) {
+        const _user = await fetch('/account/api/user');
+        const data = await _user.json();
+        showEditSale(true);
+        for (var i=0; i<data.dailyRecords.length; i++) {
+           for (var s=0; s<data.dailyRecords[i].sales.length; s++) {
+            if (data.dailyRecords[i].sales[s]._id.toString()===id.toString()) {
+                recordSN = i;
+                saleSN = s;
+            }
+           }
+        }
+        initialQN = data.dailyRecords[recordSN].sales[saleSN].qn;
+        initialCost = data.dailyRecords[recordSN].sales[saleSN].cost;
+        console.log(initialQN);
+        console.log(initialCost);
+        edit_name.value = data.dailyRecords[recordSN].sales[saleSN].name;
+        edit_id.value = data.dailyRecords[recordSN].sales[saleSN].id;
+        edit_qn.value = data.dailyRecords[recordSN].sales[saleSN].qn;
+        edit_cost.value = data.dailyRecords[recordSN].sales[saleSN].cost;
+        edit_clock.value = data.dailyRecords[recordSN].sales[saleSN].createdAt;
+    }
+    sale_edit_form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        let qn = Number(e.target.qn.value);
+        let cost = Number(e.target.total.value);
+        if (isNaN(qn) || qn<0 || isNaN(cost) || cost<0) {
+            flyMSG('err', 'Only Numbers greater than 0 are allowed on fields');
+        }
+        else {
+            if (
+        (initialQN===qn)
+            &&
+        (initialCost===cost)
+                ) 
+            {
+                //Do nothing
+            }
+            else if (
+                (initialQN===qn)
+                &&
+                (initialCost !== cost)
+                ) {
+                   try {
+                    const res = await fetch('/account/records/edit/sale/cost',{
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ recordSN, saleSN, cost })
+                    });
+                    const info = await res.json();
+                    if (info.problem) {
+                        flyMSG('err', info.message);
+                    }
+                    else {
+                        sale_edit_form.reset();
+                        flyMSG('', data.message);
+                        location.reload(true);
+                    }
+                   } 
+                   catch (err) {
+                    console.log(err.message);
+                    flyMSG('err', 'Server Error Occurred. Please try again.')
+                   }
+                }
+                else if (initialQN>qn) {
+                    let net = initialQN - qn;
+                    let storeSN = 0;
+                    //We have to return some to store
+                    try {
+                        const data = await fetch('/account/api/user');
+                        const _user = await data.json();
+                        for (var i=0; i<_user.store.length; i++) {
+                            if (
+                                (_user.store[i].name.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].name.toString().toLowerCase())
+                                    &&
+                                (_user.store[i].id.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].id.toString().toLowerCase())
+                                ) {
+                                    storeSN = i;
+                                }
+                         }
+                            let new_qn = _user.store[storeSN].qn + net;
+                            const res = await fetch('/account/records/edit/sale/all',
+                                {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({ storeSN, new_qn, recordSN, saleSN, qn, cost })
+                                }
+                            )
+                            const info = await res.json();
+                            if (info.problem) {
+                                flyMSG('err', info.message);
+                            }
+                            else {
+                                sale_edit_form.reset();
+                                flyMSG('',info.message);
+                                setTimeout(()=>{
+                                location.reload(true);
+                                }, 3000);
+                            }
+                    }
+                    catch (err) {
+                        console.log(err.message);
+                        flyMSG('err', 'Server Error Occurred. Please try again.')
+                    }
+                }
+                else if (initialQN<qn) {
+                    let net = qn - initialQN;
+                    let storeSN = 0;
+                    //We have to remove some from store
+                    try {
+                        const data = await fetch('/account/api/user');
+                        const _user = await data.json();
+                        for (var i=0; i<_user.store.length; i++) {
+                            if (
+                                (_user.store[i].name.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].name.toString().toLowerCase())
+                                    &&
+                                (_user.store[i].id.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].id.toString().toLowerCase())
+                                ) {
+                                    storeSN = i;
+                                }
+                         }
+                         if (_user.store[storeSN].qn<net) {
+                            flyMSG('err', `Out of products in store. Only ${_user.store[storeSN].qn} are available.`)
+                         }
+                         else {
+                            let new_qn = _user.store[storeSN].qn - net;
+                            const res = await fetch('/account/records/edit/sale/all',
+                                {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({ storeSN, new_qn, recordSN, saleSN, qn, cost })
+                                }
+                            )
+                            const info = await res.json();
+                            if (info.problem) {
+                                flyMSG('err', info.message);
+                            }
+                            else {
+                                sale_edit_form.reset();
+                                flyMSG('',info.message);
+                                setTimeout(()=>{
+                                location.reload(true);
+                                }, 3000);
+                            }
+                         }
+                    }
+                    catch (err) {
+                        console.log(err.message);
+                        flyMSG('err', 'Server Error Occurred. Please try again.')
+                    }
+                }
+        }
+    })
+    async function deleteSale(id) {
+        targetSaleID = id;
+        try {
+        const _user = await fetch('/account/api/user');
+        const data = await _user.json();
+        for (var i=0; i<data.dailyRecords.length; i++) {
+            if (data.dailyRecords[i]._id.toString()===idCarrier.toString()) {
+                for (var s=0;s<data.dailyRecords[i].sales.length; s++) {
+                    if (data.dailyRecords[i].sales[s]._id===targetSaleID) {
+                        saleSN = s;
+                        recordSN = i;
+                    }
+                }
+            }
+        }
+        const userconfirm = confirm(`
+        Are you sure you want to delete?\n
+        Sale Record: 
+        ${data.dailyRecords[recordSN].sales[saleSN].name}\t
+        ${data.dailyRecords[recordSN].sales[saleSN].id}\t
+        ${data.dailyRecords[recordSN].sales[saleSN].qn}\t
+        ${data.dailyRecords[recordSN].sales[saleSN].cost}
+        `);
+        if (userconfirm) {
+            deleteSaleNow(targetSaleID);
+        }
+        else {
+            //Do nothing
+        }
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Failed to fetch record. Please try again.')
+        }
+
+    }
+    async function deleteSaleNow(id) {
+        try {
+            const res = await fetch(`/account/records/edit/delete/sale/${id}`, {
+                method: 'DELETE'
+            });
+            const info = await res.json();
+            if (info.problem) {
+                flyMSG('err', info.message);
+            }
+            else {
+                location.reload(true);
+                flyMSG('', info.message);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Server Error Occurred. Please refresh page and try again.')
+        }
+    }
+
+    let ExpTargetID = '';
+    let EditExpForm = document.getElementById('edit-exp-form');
+    let titleField = document.getElementById('EditTitle');
+    let costField = document.getElementById('EditCost');
+    async function editExp(id) {
+        showEditExp(true);
+        ExpTargetID = id;
+        try {
+            const user = await fetch('/account/api/user');
+            const data = await user.json();
+            for (var i=0; i<data.dailyRecords.length; i++) {
+                for (var e=0; e<data.dailyRecords[i].expense.length; e++) {
+                    if (data.dailyRecords[i].expense[e]._id.toString()===ExpTargetID.toString()) {
+                        ExpRecordSN = i;
+                        ExpTargetSN = e;
+                    }
+                }
+            }
+            titleField.value = data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].title;
+            costField.value = data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].cost;
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Server Error Occurred');
+        }
+    }
+    EditExpForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        let title = e.target.title.value.trim();
+        let cost = Number(e.target.cost.value);
+        try {
+            const res = await fetch('/account/records/edit/exp',{
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ ExpRecordSN, ExpTargetSN,title, cost })
+            });
+            const data = await res.json()
+            if (data.problem) {
+                flyMSG('err', data.message);
+            }
+            else {
+                EditExpForm.reset();
+                flyMSG('', data.message);
+                setTimeout(()=>{
+                    location.reload(true)
+                }, 3000);
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Server Error Occurred')
+        }
+    })
+    async function deleteExp(id) {
+        let ExpRecordSN = 0;
+    let ExpTargetSN = 0;
+        ExpTargetID = id;
+        try {
+            const user = await fetch('/account/api/user');
+            const data = await user.json();
+            for (var i=0; i<data.dailyRecords.length; i++) {
+                for (var e=0; e<data.dailyRecords[i].expense.length; e++) {
+                    if (data.dailyRecords[i].expense[e]._id.toString()===ExpTargetID.toString()) {
+                        ExpRecordSN = i;
+                        ExpTargetSN = e;
+                    }
+                }
+            }
+        const userconfirm = confirm(`Are you sure you want to delete Expense?\nTitle: ${data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].title}\nCost: ${data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].cost}`)
+        if (userconfirm) {
+            const res = await fetch(`/account/records/edit/delete/exp/${ExpTargetID}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+            if (data.problem) {
+                flyMSG('err', data.message);
+            }
+            else {
+                flyMSG('', data.message);
+                setTimeout(()=>{
+                    location.reload(true);
+                }, 3000);
+            }
+        }
+        else {
+            //Do nothing
+        }
+        }
+        catch (err) {
+            console.log(err.message);
+            flyMSG('err', 'Server Error Occurred. Please try again. ')
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    function updateClock() {
+
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, 0);
+  const minutes = now.getMinutes().toString().padStart(2, 0);
+  const seconds = now.getSeconds().toString().padStart(2, 0);
+  const timer = `${hours}:${minutes}:${seconds}`;
+  document.getElementById('clock').value = timer;
+  document.getElementById('exp_clock').value = timer;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

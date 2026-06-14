@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataVox App</title>
+  <!--
+  <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+-->
+<link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="./style.css" type="text/css"/>
+  <link rel="stylesheet" href="./main.css" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="/nav.css"/>
+  <style>
+    body {
+      /*background-image: linear-gradient(to right, rgb(0, 128, 0, 0.8), rgb(128, 128, 128), rgb(0, 200, 200) );*/
+      background:
+linear-gradient(
+135deg,
+#08111f,
+#0f1d33,
+#00a8cc
+);
+      font-size: 1.2em;
+    }
+    .top_layer {
+      width: 100%;
+      position: fixed;
+      background: transparent;
+      backdrop-filter: blur(40px);
+      color: rgb(0, 198, 255);
+      font-weight: 500;
+      top: 0;
+      text-align: center !important;
+      justify-content: center !important;
+      padding: 2%;
+      font-family: 'Segoe UI' sans-serif !important;
+      font-size: larger;
+      z-index: 9999;
+    }
+    .first_body {
+      margin-top: 10%;
+      display: grid;
+      grid-template-columns: 1fr .6fr;
+      border: none;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      padding: 2%;
+      
+      color: white;
+      font-weight: 555;
+      font-family: 'cambria math';
+    }
+    .personal_info,
+    .time {
+      padding: 1.5%;
+      margin: 1%;
+    }
+    .time {
+      background: transparent;
+      backdrop-filter: blur(100px);
+      border-color: green;
+      border-style: solid;
+      border: none;
+      border-radius: 15px;
+      text-align: center;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+     <div class="fly_message" id="fly_message">
+      Message
+    </div>
+
+
+    <div class="top_layer">
+        <i style="color: cyan;" class="fa-solid fa-cube"></i> DataVox
+    </div>
+
+<div class="first_body">
+  <div class="personal_info">
+    👋🏼 Hello,<br/>
+    <span style="font-size: larger;" id="name"></span>
+  </div>
+  <div class="time">
+      <div id="clock">00:00:00</div>
+      <div id="date"></div>
+  </div>
+</div>
+  <div class="container">
+
+    <!--
+    CONTROL SECTION
+    -->
+    <div class="controls">
+
+        <!--
+      CONTROL BUTTONS
+        -->
+      <div class="control" onclick="window.location.href='/account/records';">
+        <div class="icon">
+          <i class="fa fa-calculator"></i>
+        </div>
+        <div class="txt">
+          <h3>Daily Records</h3>
+          <p>View daily records</p>
+        </div>
+      </div>
+
+      <div class="control" onclick="window.location.href='/account/store';">
+        <div class="icon">
+          <i class="fa fa-store"></i>
+        </div>
+        <div class="txt">
+          <h3>Store</h3>
+          <p>View Products From your Store</p>
+        </div>
+      </div>
+
+
+      <div class="control" onclick="window.location.href='/account/reports';">
+        <div class="icon">
+          <i class="fa fa-file-lines"></i>
+        </div>
+        <div class="txt">
+          <h3>Reports</h3>
+          <p>View Daily Generated Reports</p>
+        </div>
+      </div>
+
+
+      <div class="control" onclick="window.location.href='/account/settings';">
+        <div class="icon">
+          <i class="fa fa-cog"></i>
+        </div>
+        <div class="txt">
+          <h3>Change Profile</h3>
+          <p>Feel Free to change own profile settings</p>
+        </div>
+      </div>
+
+      <div class="control" id="logger" onclick="window.location.href='/logout';">
+        <div class="icon">
+          <i id="loggericon" class="fa fa-sign-out"></i>
+        </div>
+        <div class="txt" id="loggertxt">
+          Log Out
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <nav class="bottom-nav" id="nav"></nav>
+  <script type="text/javascript" src="/dateScript.js"></script>
+  <script type="text/javascript" src="nav.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadNav('home');
+    });
+</script>
+   <script type="text/javascript" src="main.js" defer></script>
+  <script type="text/javascript" defer>
+    let logger = document.getElementById('logger');
+    let icon = document.getElementById('loggericon');
+    let txt = document.getElementById('loggertxt');
+    document.addEventListener('DOMContentLoaded', async () => {
+      // main.js is now fully loaded and executed
+      //here fetching user info to get name
+      try {
+      logger.setAttribute('onclick', 'window.location.href="/logout";');
+      icon.setAttribute('class', 'fa fa-sign-out');
+      txt.innerHTML = 'Log Out';
+      const res = await fetch("/account/api/user");
+      const data = await res.json();
+      flyMSG('', `Welcome ${data.name}`);
+      document.getElementById('name').innerHTML = data.name;
+    } catch (err) {
+      window.location.href='/login';
+      /*
+      console.error(err.message);
+      logger.setAttribute('onclick', 'window.location.href="/login";');
+      icon.setAttribute('class', 'fa fa-sign-in');
+      txt.innerHTML = 'Log In';
+      flyMSG('', 'Welcome, Please Log In.');
+      */
+    }
+    });
+  </script>
+</body>
+</html>

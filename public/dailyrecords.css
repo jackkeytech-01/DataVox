@@ -1,0 +1,109 @@
+body {
+	background-color: black !important;
+	color: white !important;
+	font-family: candara;
+}
+.top_header {
+	text-align: center;
+	margin-bottom: 1.5%;
+	cursor: default;
+}
+h1 {
+	margin: 0;
+}
+._records {
+	margin: 0;
+}
+.main_body {
+	margin-top: 10% !important;
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.record_card {
+	border-radius: 10px;
+	/*
+	border-color: darkcyan;
+	border-style: solid;
+	border-width: 1px;
+	*/
+	padding: 0%;
+	margin: 0;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	background: transparent;
+	backdrop-filter: blur(60px);
+	cursor: pointer;
+	display: grid;
+	grid-template-columns: .1fr 1fr;
+	width: 100%;
+	height: fit-content;
+	border: none;
+	border-bottom: 2px solid #fff;
+}
+.card_title {
+	color: rosybrown;
+}
+.card_info {
+	background: transparent;
+	width: border-box;
+	padding: 1%;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	font-size: 20px !important;
+	display: grid;
+	grid-template-rows: .5fr .5fr;
+}
+.icon {
+	display: flex;
+	vertical-align: middle !important;
+	text-align: center;
+	border: none;
+	padding-top: 40% !important;
+	padding-bottom: 30% !important;
+	font-size: 25px;
+	justify-content: center;
+}
+.card_details {
+	display: grid;
+	grid-template-columns: .5fr .5fr;
+}
+.card_sales,
+.card_expense {
+	display: inline-block;
+}
+.add_btn {
+	background-color: green;
+	color: white;
+	font-weight: bolder;
+	padding: 5%;
+	width: fit-content;
+	height: fit-content;
+	cursor: default;
+	z-index: 9999;
+	bottom: 15%;
+	right: 2.5%;
+	font-size: 1.1em;
+	position: fixed;
+	border-radius: 50% 50%;
+}
+@media(min-width: 500px) {
+	.icon {
+		padding-top: 30% !important;
+	}
+	/*
+	.record_card {
+		margin: 3%;
+		border-width: 2px;
+	}
+	.card_title {
+		font-size: 2em;
+	}
+	.card_info,
+	.card_sales,
+	.card_expense {
+		font-size: 1.1em;
+	}
+	*/
+
+}
