@@ -10,7 +10,7 @@ const reports = require('./routes/reports')
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
 const connectDB = require('./config/db')
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.SECRET_KEY;
 app.use(express.json())
 app.use(session({
@@ -18,7 +18,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.tempo_url,
+    mongoUrl: process.env.MONGO_URI,
     collectionName: 'sessions'
   }),
   cookie: {
