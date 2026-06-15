@@ -27,6 +27,7 @@ app.use(session({
 }));
 connectDB();
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname)))
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.set('views', './views')
