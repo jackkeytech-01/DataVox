@@ -90,6 +90,59 @@ cursor:pointer;
 font-weight:bold;
 }
 
+/* SEARCH PANE */
+.search_pane {
+	display: flex;
+	position: fixed;
+	top: 5%;
+	width: auto;
+	right: 20%;
+	left: 20%;
+	gap: 10px;
+	background: rgb(0, 255, 255, 0.8);
+	z-index: 9999;
+	text-align: center;
+	justify-content: center;
+	border-radius: 10px;
+	border: 1px solid black;
+	font-size: 1.5em;
+	padding: 0.5%;
+}
+.search_pane.hide {
+	display: none;
+}
+.filterSearch {
+	background: transparent;
+	backdrop-filter: blur(100px);
+	border: none;
+	color: black;
+	font-weight: bolder;
+	outline: none;
+	width: 60%;
+	padding: 1%;
+}
+.ctrl_pane{
+	display: flex;
+	gap: 10px;
+}
+.btn_{
+	border: none;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	background: transparent;
+	padding: 1%;
+}
+.btn_.close {
+	background: none;
+	color: red;
+	margin-left: 80%;
+}
+@media (max-width: 800px) {
+	.btn_.close {
+		margin-left: 20%;
+	}
+}
 /* PRODUCT CARD */
 
 .products{
@@ -221,16 +274,52 @@ cursor:pointer;
 	display: block;
 	padding: 2.5%;
 	text-align: center;
-	background: green;
+	background: rgb(0, 128, 0, 0.8);
 	color: white;
 	border: none;
 	font-weight: bold;
 	font-family: candara;
-	border-radius: 60px;
+	border-radius: 20% 20%;
 	width: fit-content;
 	align-self: center;
 	margin-top: 2%;
 	cursor: pointer;
+	transition: all 0.5s;
+}
+.btn:hover {
+	transform: scale(1.1, 1.1);
+	box-shadow: inset 1px 2px 30px 1px #eee !important;
+}
+.sub_btn {
+	position: fixed;
+	right: 3%;
+	z-index: 9999;
+	bottom: 15%;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	width: fit-content;
+	height: fit-content;
+	padding: 1%;
+	background: transparent;
+	backdrop-filter: blur(60px);
+	border-radius: 15px;
+	border: none;
+}
+.subbtn {
+	background: transparent !important;
+	color: brown;
+	border: none;
+	font-weight: bolder;
+	width: fit-content;
+	height: fit-content;
+	padding: 2% !important;
+	cursor: pointer;
+	transition: all 0.5s;
+}
+.subbtn:hover {
+	transform: translateY(-5px);
+	color: white;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="/nav.css"/>
@@ -284,7 +373,39 @@ Store
 	</div>
 </div>
 
+<!--
+Search pane (Filter)
+-->
+<div class="search_pane" id="search_pane">
+	<!--<div class="ctrl_pane">-->
+		<select class="filterSearch" id="filterSearch">
 
+		</select>
+	<!--</div>-->
+	<div class="ctrl_pane">
+		<div class="btn_ search" onclick="filterStore();">
+			<i class="fa-solid fa-search"></i>
+		</div>
+		<div class="btn_ close" onclick="showFilter(false);">
+			<i class="fa-solid fa-close"></i>
+		</div>
+	</div>
+</div>
+
+<!--
+Button for sub stores
+-->
+<div class="sub_btn">
+<div class="subbtn search" onclick="showFilter(true);">
+	<i class="fa-solid fa-search"></i>
+</div>
+<div class="subbtn store" onclick="
+alert('Sorry feature still under update...');
+//window.location.href='/account/store/sub';
+">
+	<i class="fa-solid fa-code-branch"></i>
+</div>
+</div>
 <!-- FORM PANE -->
 <form class="form-card" id="form_">
 					<center>
@@ -372,6 +493,166 @@ Fetching user to get total products store
 	let total_products = document.getElementById('total_products');
 	let total_runOut = document.getElementById('total_runOut');
 
+	async function filterStore() {
+		runout_view.innerHTML = '';
+		product_view.innerHTML = '';
+		let filterValue = document.getElementById('filterSearch').value;
+		console.log();
+			try {
+				const res = await fetch('/account/api/user');
+				const data = await res.json();
+					
+					//INCASE STORE LENGTH IS ZERO THEN NO PRODUCTS
+
+				if (data.store.length<=0) {
+						let err = document.createElement('div');
+						err.setAttribute('class', 'zero');
+						let err_txt = document.createElement('div');
+						err_txt.setAttribute('class', 'zero_txt');
+						err_txt.innerHTML = 'Ooops!, No products in Store';
+						err.appendChild(err_txt);
+						let creat = document.createElement('div');
+						creat.setAttribute('class', 'btn');
+						creat.setAttribute('onclick', 'window.location.href="/account/store/add"');
+						creat.innerHTML = 'Add New Stock';
+						err.appendChild(creat);
+						product_view.appendChild(err);
+						//==>Setting all the stuffs to zero like that
+								
+								total_products.innerHTML = 0;
+								total_runOut.innerHTML = 0;
+					}
+					
+
+					//ELSE IF NOT LESS OR EQUAL ZERO..THEN THERE ARE PRODUCTS
+					else if (data.store.length>0){
+						let totalProducts = 0;
+						let totalRunOut = 0;
+							let card = '';
+							let runout_card = '';
+						//STORE LOOP
+						for (var i=0; i<data.store.length; i++) {
+							if (data.store[i].name===filterValue) {
+								document.title = `Searched: ${filterValue}`;
+							totalProducts += 1;
+							//CHECKING RUNNING OUT PRODUCTS TO ALSO BE PRESENT IN RUNNING OUT
+							if (data.store[i].qn<=data.store[i].running_out) {
+								totalRunOut += 1;
+								runout_card += 
+							`
+							<div class="product-card">
+							<div class="product-name">${data.store[i].name}</div>
+							<div class="info-row">
+								<span class="label">ID</span>
+								<span class="value">${data.store[i].id}</span>
+							</div>		
+							<div class="info-row">
+								<span class="label">Quantity</span>
+								<span class="value">${data.store[i].qn}</span>
+							</div>				
+							<div class="info-row">
+								<span class="label">Unit Price</span>
+								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Unit From</span>
+								<span class="value">${data.store[i].unitFrom}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Selling Price</span>
+								<span class="value">${data.store[i].sellingPrice}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Running Out</span>
+								<span class="value">${data.store[i].running_out}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Created On</span>
+								<span class="value">${data.store[i].createdAt}</span>
+							</div>
+							<div class="card-actions">
+							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+								<i class="fa fa-pen"></i> Edit
+							</button>
+							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+								<i class="fa fa-trash"></i> Delete
+							</button>
+							</div>
+							</div>
+							`;
+								runout_view.innerHTML = runout_card;
+							}
+							card += 
+							`
+							<div class="product-card">
+							<div class="product-name">${data.store[i].name}</div>
+							<div class="info-row">
+								<span class="label">ID</span>
+								<span class="value">${data.store[i].id}</span>
+							</div>		
+							<div class="info-row">
+								<span class="label">Quantity</span>
+								<span class="value">${data.store[i].qn}</span>
+							</div>				
+							<div class="info-row">
+								<span class="label">Unit Price</span>
+								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Selling Price</span>
+								<span class="value">${data.store[i].sellingPrice}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Running Out</span>
+								<span class="value">${data.store[i].running_out}</span>
+							</div>
+							<div class="info-row">
+								<span class="label">Created On</span>
+								<span class="value">${data.store[i].createdAt}</span>
+							</div>
+							<div class="card-actions">
+							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+								<i class="fa fa-pen"></i> Edit
+							</button>
+							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+								<i class="fa fa-trash"></i> Delete
+							</button>
+							</div>
+							</div>
+							`;
+							product_view.innerHTML = card;
+
+						}
+						//AT THE END SUMMING UP WITH VALUES TO BE AT THE TOP
+						total_products.innerHTML = totalProducts;
+						total_runOut.innerHTML = totalRunOut;
+						if (totalRunOut<=0) {
+						let err = document.createElement('div');
+						err.setAttribute('class', 'zero');
+						let err_txt = document.createElement('div');
+						err_txt.setAttribute('class', 'zero_txt');
+						err_txt.innerHTML = 'Ooops!, No products Running Out';
+						err.appendChild(err_txt);
+						let creat = document.createElement('div');
+						creat.setAttribute('class', 'btn');
+						creat.setAttribute('onclick', 'showProducts(true);');
+						creat.innerHTML = 'View Store';
+						err.appendChild(creat);
+						runout_view.appendChild(err);
+
+						}
+					}
+					}
+
+				
+				}
+				catch (err) {
+					console.log(err.message);
+					flyMSG('err', 'Server Error Occured. Please try again.')
+				}
+			}
+
+	//Get store function that loads all the products on the page
 async function getStore() {
 		runout_view.innerHTML = '';
 		product_view.innerHTML = '';
@@ -551,7 +832,57 @@ function showProducts(opt) {
 } 
 showProducts(true);
 </script>
+<!--
+for the filter or search window dialog on top
+-->
+<script type="text/javascript">
+let filterWindow = document.getElementById('search_pane');
 
+function showFilter(opt) {
+	if (opt) {
+		filterWindow.classList.remove('hide');
+		loadNames();
+	} else {
+		filterWindow.classList.add('hide');
+		getStore();
+	}
+}
+	showFilter(false)
+
+
+
+// Fixed Name loader 
+async function loadNames() {
+	let selector = document.getElementById('filterSearch');
+	let optionString = '';
+	
+	selector.innerHTML = "<li class='loading-text'>Loading...</li>";
+	
+	try {
+		const user = await fetch('/account/api/user');
+		const data = await user.json();
+		
+		for (var i = 0; i < data.names.length; i++) {
+			// Using <li> gives us 100% style control
+			optionString += `
+			<option value="${data.names[i]}">
+				${data.names[i]}
+			</option>
+			`;
+		}
+		selector.innerHTML = optionString;
+
+	} catch (err) {
+		console.log(err.message);
+		showFilter(false);
+		if (typeof flyMSG === 'function') {
+			flyMSG('err', 'Failed to load Names. Please try again.');
+		}
+	}
+}
+
+
+</script>
 <script type="text/javascript" src="/nav.js" defer></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {

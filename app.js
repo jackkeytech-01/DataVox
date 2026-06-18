@@ -9,7 +9,8 @@ const record = require('./routes/record');
 const reports = require('./routes/reports')
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
-const connectDB = require('./config/db')
+const connectDB = require('./config/db');
+const substore = require('./routes/substore');
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.SECRET_KEY;
 app.use(express.json())
@@ -44,6 +45,7 @@ app.use('/', account);
 app.use('/', store);
 app.use('/', record);
 app.use('/',reports);
+app.use('/', substore);
 app.listen(PORT, ()=>{
   console.log(`App running on port ${PORT}`);
 })
