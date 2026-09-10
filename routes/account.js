@@ -9,7 +9,7 @@ account.get('/', (req, res)=>{
   if (req.session.user) {
     isLogged = true;
   }
-   return res.redirect('landing', { isLogged: isLogged })
+   return res.render('landing', { isLogged: isLogged })
 });
 
 account.get('/account', async (req, res) => {
