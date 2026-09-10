@@ -6,6 +6,7 @@
   <title>Settings</title>
   <link rel="stylesheet" href="/main.css" type="text/css"/>
   <link rel="stylesheet" href="/settings.css" type="text/css"/>
+  <link rel="manifest" href="manifest.json"/>
 </head>
 <body>
   <div class="info">
@@ -136,5 +137,11 @@
       send_btn.setAttribute('style','display: block !important;')
     }
   </script>
+  <script type="text/javascript">
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+
+</script>
 </body>
 </html>

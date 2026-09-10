@@ -9,7 +9,7 @@ reports.get('/account/reports', (req, res)=>{
   res.sendFile(path.join(__dirname, "../public", "reports.html"));
 })
 
-reports.get('/account/reports/:id', async (req, res)=>{
+reports.get(process.env.GET_REPORTS_API, async (req, res)=>{
   const id = req.params.id;
   let SN = 0;
   let total_sale = 0;

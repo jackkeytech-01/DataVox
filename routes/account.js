@@ -6,22 +6,20 @@ const mongoose = require('mongoose');
 
 account.get('/', (req, res)=>{
   if (req.session.user) {
-    return res.redirect('/account');
+   res.redirect('/account');
   }
   else {
-  return res.sendFile(path.join(__dirname, '../public', 'landing.html'));
+   return res.sendFile(path.join(__dirname, '../public', 'landing.html'));
   }
 });
-account.get('/account', (req, res)=>{
-  if (req.session.user) {
-  res.sendFile(path.join(__dirname, '../public', 'account.html'))
-}
-else {
-  res.redirect('/');
-}
+
+account.get('/account', async (req, res) => {
+	if (req.session.user) {
+		return res.render('account');
+	} else {
+		res.redirect('/');
+	}
 });
-
-
 
 
 

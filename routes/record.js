@@ -3,11 +3,17 @@ const record = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const path = require('path');
+
+
+
 record.get('/account/records', (req, res)=>{
   res.sendFile(path.join(__dirname, "../public", "records.html"));
 })
 
-record.post('/account/records/new', async (req, res)=>{
+
+
+
+record.post(process.env.NEW_RECORDS_API, async (req, res)=>{
   try {
   const { title } = req.body;
   const _user = await User.findById(req.session.user);
@@ -41,9 +47,11 @@ catch (err) {
 }
 })
 
+
+
 //let idCarrier = ''; //Global variable to handle ID
 //When user wants to edit records
-record.get('/account/records/edit/:id', async (req, res)=>{
+record.get(process.env.GET_EDIT_RECORD_API, async (req, res)=>{
   const _user = await User.findById(req.session.user);
   const { id } = await req.params;
   let serial = 0;
@@ -75,7 +83,8 @@ record.get('/account/records/edit/:id', async (req, res)=>{
 })
 
 
-record.delete('/account/records/delete/:id', async (req, res)=>{
+
+record.delete(process.env.DELETE_RECORD_API, async (req, res)=>{
   try {
   const _user = await User.findById(req.session.user);
   await _user.dailyRecords.pull({ _id: req.params.id });
@@ -95,7 +104,8 @@ record.delete('/account/records/delete/:id', async (req, res)=>{
 })
 
 
-record.post('/account/records/edit/add/sale', async (req, res)=>{
+
+record.post(process.env.ADD_SALE_API, async (req, res)=>{
   let connected = false;
   try {
   const { storeID, idCarrier, newQN, name, id__, qn, total, time } = req.body;
@@ -152,7 +162,10 @@ record.post('/account/records/edit/add/sale', async (req, res)=>{
 
 })
 
-record.delete('/account/records/edit/delete/sale/:id', async (req, res)=>{
+
+
+
+record.delete(process.env.DELETE_SALE_API, async (req, res)=>{
   const saleID = req.params.id;
   let recordTarget = 0;
   let saleTarget = 0;
@@ -201,7 +214,11 @@ record.delete('/account/records/edit/delete/sale/:id', async (req, res)=>{
     })
   }
 });
-record.put('/account/records/edit/sale/all', async (req, res)=>{
+
+
+
+
+record.put(process.env.PUT_ALL_SALE_API, async (req, res)=>{
   try {
   const _user = await User.findById(req.session.user);
     await User.updateOne(
@@ -229,7 +246,7 @@ record.put('/account/records/edit/sale/all', async (req, res)=>{
     })
   }
 })
-record.put('/account/records/edit/sale/cost', async (req, res)=>{
+record.put(process.env.PUT_COST_SALE_API, async (req, res)=>{
   const { recordSN, saleSN, qn, cost } = req.body;
   try {
     await User.updateOne(
@@ -249,7 +266,10 @@ record.put('/account/records/edit/sale/cost', async (req, res)=>{
     })
   }
 })
-record.post('/account/records/edit/add/exp', async (req, res)=>{
+
+
+
+record.post(process.env.ADD_EXP_API, async (req, res)=>{
   try { 
     const { idCarrier, title, cost, time } = req.body;
     const _user = await User.findById(req.session.user);
@@ -272,7 +292,10 @@ record.post('/account/records/edit/add/exp', async (req, res)=>{
     })
   }
 })
-record.put('/account/records/edit/exp', async (req, res)=>{
+
+
+
+record.put(process.env.EDIT_EXP_API, async (req, res)=>{
   try {
      await User.updateOne(
       { _id: req.session.user },
@@ -295,7 +318,10 @@ record.put('/account/records/edit/exp', async (req, res)=>{
             })
           }
 })
-record.delete('/account/records/edit/delete/exp/:id', async (req, res)=>{
+
+
+
+record.delete(process.env.DELETE_EXP_API, async (req, res)=>{
   try {
   const _user = await User.findById(req.session.user);
   let ExpRecordSN = 0;
@@ -323,4 +349,7 @@ record.delete('/account/records/edit/delete/exp/:id', async (req, res)=>{
             })
           }
 })
+
+
+
 module.exports = record;

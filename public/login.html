@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In | DataVox</title>
+    <title>Log In | DataApp</title>
     <link rel="stylesheet" href="./form_style.css" type="text/css"/>
     <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+    <link rel="manifest" href="manifest.json"/>
 </head>
 <body>
     <form id="login_form" method="post" class="form" action="login">
 
     <div class="logo" style="cursor: pointer;" onclick="window.location.href='/';">
-        DataVox
+        Jadata
     </div>
 
     <div class="header">
@@ -46,5 +47,11 @@
 
 </form>
 <script type="text/javascript" src="./login_script.js"></script>
+<script type="text/javascript">
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+
+</script>
 </body>
 </html>

@@ -13,7 +13,7 @@ auth.get('/logout', async (req, res)=>{
   req.session.destroy();
   res.redirect('/login')
 })
-auth.post('/account/updateProfile', async (req, res)=>{
+auth.post(process.env.UPDATE_PROFILE_API, async (req, res)=>{
   const { name, password, password1, password2 } = req.body;
   const user = await User.findOne({ _id: req.session.user });
   if (!user) {return res.json({ problem: true, message: 'Session Expired. Please Log in Again.'})}
@@ -72,7 +72,7 @@ auth.post('/account/updateProfile', async (req, res)=>{
 }
 }
 })
-auth.post('/login', async (req, res)=>{
+auth.post(process.env.LOGIN_API, async (req, res)=>{
   const { username, password } = req.body;
   const userExist = await User.findOne({ username: username });
 
@@ -104,7 +104,7 @@ auth.post('/login', async (req, res)=>{
   })
 })
 
-auth.post('/signup', async(req, res)=>{
+auth.post(process.env.SIGNUP_API, async(req, res)=>{
   const { name, username, email, password} = req.body;
   const userExist = await User.findOne({ username: username });
   if (userExist) {

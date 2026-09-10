@@ -1,35 +1,55 @@
 .fly_message {
-  display: block;
+  display: flex !important;
+  align-self: center;
+  justify-self: center;
+  visibility: hidden;
   position: fixed;
   text-align: center !important;
   justify-content: center;
-  padding: 1.5%;
+  padding: 1.8%;
+  padding-left: 3%;
+  padding-right: 3%;
+  margin: 1%;
   z-index: 10000 !important;
   /*background-color: rgb(128, 128, 128, 0.8);*/
-  background-color: lime;
-  color: white;
+  /*background-color: lime;*/
+  /*
+  background: linear-gradient(
+90deg,
+#007bff,
+#00c6ff
+);
+*/
+  background: rgb(200, 200, 200, 0.5);
+  color: rgb(241, 241, 241);
   font-weight: bold;
   font-size: 0.8em;
-  border-radius: 1px;
-  width: 100vw !important;
   font-family: candara;
+  top: 80%;
+  font-weight: 50 !important;
+  width: fit-content;
+  border-color: cyan !important;
+  border-width: 15px;
 }
 .fly_message.show {
-  top: 85%;
-  transition: all 2s;
+  /*top: 85%;*/
+  border-radius: 60px;
+  visibility: visible;
+  transition: all 0.5s;
 }
 .fly_message.hide {
-  top: 0%;
+  /*top: 0%;*/
+  background-color: transparent !important;
+  visibility: hidden !important;
   transition: all 2s;
-  background-color: transparent;
   color: transparent !important;
 }
-
-fly_message.hide {
+/*
+.fly_message.hide {
   transition: all 5s;
   z-index: 0;
 }
-fly_message.hide {
+.fly_message.hide {
   transition: all 5s;
   display: none;
 }

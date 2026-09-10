@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DataVox - Sub Stores</title>
-
+<link rel="manifest" href="manifest.json"/>
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -17,8 +17,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 }
 
 body{
-    background:#f5f7fa;
+    background:#07192e;
     padding:20px;
+    color: white;
 }
 
 .container{
@@ -54,7 +55,7 @@ body{
 
 .empty-state{
     text-align:center;
-    background:white;
+    background:#10253f;
     padding:60px 20px;
     border-radius:15px;
     box-shadow:0 2px 10px rgba(0,0,0,.08);
@@ -81,7 +82,7 @@ body{
 }
 
 .store-card{
-    background:white;
+    background:#10253f;
     padding:18px;
     border-radius:15px;
     display:flex;
@@ -168,8 +169,7 @@ body{
     </div>
 
     <!-- Empty Message -->
-     <% if (user.sub_store) {%>
-<% if (user.sub_store.length<=0) {%>
+<% if (user.sub_store) {%>
     <div class="empty-state" id="emptyState">
         <i class="fa-solid fa-shop"></i>
         <h2>No Sub Stores Yet</h2>
@@ -180,13 +180,7 @@ body{
     <div class="substores" id="storesContainer"></div>
 
 </div>
-<%}} else {%>
-    <div class="empty-state" id="emptyState">
-        <i class="fa-solid fa-shop"></i>
-        <h2>No Sub Stores Yet</h2>
-        <p>Create your first sub store to start managing inventory.</p>
-    </div>
-    <%}%>
+<%}%>
 <script>
 
 let subStores = [];
@@ -264,6 +258,11 @@ document.getElementById("addStoreBtn")
 renderStores();
 
 </script>
+<script type="text/javascript">
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
 
+</script>
 </body>
 </html>

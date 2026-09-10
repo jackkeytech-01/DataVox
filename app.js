@@ -26,6 +26,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 * 365
   }
 }));
+//lets escape database connection for a moment
 connectDB();
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname)))

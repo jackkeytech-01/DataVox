@@ -10,8 +10,8 @@ const mongoose = require('mongoose');
 =====================================
 
 */
-store.get('/account/store', (req, res)=>{
-  res.sendFile(path.join(__dirname, "../public", "store.html"))
+store.get('/account/store', async (req, res)=>{
+  res.sendFile(path.join(__dirname, "../public", "store.html"))  
 })
 
 store.get('/account/store/add', async (req, res)=>{

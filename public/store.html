@@ -10,16 +10,24 @@ content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="/top_form.css" type="text/css" />
+<!--<link rel="stylesheet" href="/top_form.css" type="text/css" />-->
 <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
+<link rel="stylesheet" type="text/css" href="/form_styles.css"/>
 <style>
-
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+/*
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
+*/
 
 body{
 background:#07192e;
@@ -348,7 +356,7 @@ Store
 
 </div>
 
-<button class="add-btn" onclick="window.location.href='/account/store/add';">
+<button class="add-btn" onclick="newStockForm(true);">
 
 + Add Product
 
@@ -400,13 +408,140 @@ Button for sub stores
 	<i class="fa-solid fa-search"></i>
 </div>
 <div class="subbtn store" onclick="
-alert('Sorry feature still under update...');
-//window.location.href='/account/store/sub';
+//alert('Sorry feature still under update...');
+window.location.href='/account/store/sub';
 ">
 	<i class="fa-solid fa-code-branch"></i>
 </div>
 </div>
+
+<!-- ADDING NEW STOCK PANE -->
+<div id="newStockForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> ➕ Add New Stock </h2>
+            <button onclick="newStockForm(false)">✖</button>
+        </div>
+
+        <form id="newStockForm" method="post" action="/api/quote">
+            <div class="field">
+                <label>Product Name</label>
+                <!--<textarea id="quote" name="quote" required placeholder="Enter quote..."></textarea>-->
+								<input list="names"  name="name" placeholder="Product Name">
+
+        						<datalist id="names">
+            					<!--
+                			<option value="Reading">
+                			<option value="Gaming">
+                			<option value="Cooking">
+                			<option value="Gardening">
+                			-->
+        						</datalist>
+            </div>
+            <div class="field">
+                <label>Product Unique ID</label>
+                <input type="text" placeholder="Product ID" name="id"  required />
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+            <input type="number" placeholder="e.g. 50" name="qn"  required />
+            </div>
+        <div class="field">
+            <label>Unit Price (TZS)</label>
+            <input type="number" placeholder="e.g. 500" name="unitPrice"  required />
+        </div>
+
+        <div class="field">
+            <label>Unit From</label>
+            <input type="number" placeholder="Unit Price is sold from." name="unitFrom"  required />
+        </div>
+
+        <div class="field">
+            <label>Running Out Alert</label>
+            <input type="number" placeholder="e.g. 10" name="runOut"  required >
+        </div>
+
+        <div class="field">
+            <label>Selling Price (TZS)</label>
+            <input type="number" placeholder="e.g. 800" name="sellPrice" required />
+        </div>
+            <div class="field" style="display: none;">
+                <label>Time</label>
+                <input id="time" placeholder="Small explanation..." name="time">
+            </div>
+            <div class="actions">
+                <button type="reset" id="cancelBtn" class="cancel-btn" onclick="newStockForm(false)">
+                    Cancel
+                </button>
+                <button type="submit" class="post-btn">
+                    Add Stock
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- FORM PANE -->
+
+<div id="editStockForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Edit Stock </h2>
+            <button onclick="editStockForm(false);">✖</button>
+        </div>
+
+        <form id="form_">
+            <div class="field">
+            <label>Product Name</label>
+        <input list="names"  name="name" id="name_input" placeholder="Product Name">
+
+
+        </div>
+
+        <div class="field">
+            <label>Product Unique ID</label>
+            <input type="text" placeholder="Product ID" name="id" id="id_input"  required />
+        </div>
+
+        <div class="field">
+            <label>Quantity</label>
+            <input type="number" placeholder="e.g. 50" name="qn" id="qn_input" required />
+        </div>
+
+        <div class="field">
+            <label>Unit Price (TZS)</label>
+            <input type="number" placeholder="e.g. 500" name="unitPrice" id="unitPrice_input" required />
+        </div>
+
+        <div class="field">
+            <label>Unit From</label>
+            <input type="number" placeholder="Unit Price is sold from." name="unitFrom" id="unitFrom_input" required />
+        </div>
+
+        <div class="field">
+            <label>Running Out Alert</label>
+            <input type="number" placeholder="e.g. 10" name="runOut" id="run_input" required >
+        </div>
+
+        <div class="field">
+            <label>Selling Price (TZS)</label>
+            <input type="number" placeholder="e.g. 800" name="sellPrice" id="sellPrice_input" required />
+        </div>
+            <div class="actions">
+                <button type="reset" id="cancelBtn" class="cancel-btn" onclick="editStockForm(false);">
+                    Cancel
+                </button>
+                <button type="submit" class="post-btn">
+                    Edit Product
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--
+
 <form class="form-card" id="form_">
 					<center>
 						<b>
@@ -466,7 +601,7 @@ alert('Sorry feature still under update...');
 
     </form>
 
-
+-->
 
 
 
@@ -671,7 +806,7 @@ async function getStore() {
 						err.appendChild(err_txt);
 						let creat = document.createElement('div');
 						creat.setAttribute('class', 'btn');
-						creat.setAttribute('onclick', 'window.location.href="/account/store/add"');
+						creat.setAttribute('onclick', 'newStockForm(true)');
 						creat.innerHTML = 'Add New Stock';
 						err.appendChild(creat);
 						product_view.appendChild(err);
@@ -922,9 +1057,76 @@ async function deleteProof(id) {
 
 </script>
 
+
+
+<!-- Showing and hidding new Stock Form Processess -->
+<script type="text/javascript" defer>
+	function newStockForm(option) {
+		let newStockForm = document.getElementById('newStockForm');
+		if (option) {
+			newStockForm.classList.add('show');
+		}
+		else {
+			newStockForm.classList.remove('show');
+		}
+	}
+	let newStockForm_ = document.getElementById('newStockForm');
+	document.getElementById('newStockForm').addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        send_btn.disabled=true;
+        send_txt.textContent = 'Saving...';
+        const name = e.target.name.value.trim();
+        const id__ = e.target.id.value;
+        const qn = Number(e.target.qn.value);
+        const unitPrice = Number(e.target.unitPrice.value);
+        const unitFrom = Number(e.target.unitFrom.value);
+        const runOut = Number(e.target.runOut.value);
+        const sellPrice = Number(e.target.sellPrice.value);
+        const time = e.target.time.value;
+        //alert(`${name} : ${qn} : ${unitPrice} : ${unitFrom} : ${runOut} : ${sellPrice} : ${time}`);
+        const res = await fetch('/account/store/add', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, id__, qn, unitPrice, unitFrom, runOut, sellPrice, time })
+        })
+        const data = await res.json();
+            if (data.problem) {
+                flyMSG('err', data.message);
+                send_btn.disabled=false;
+                send_txt.textContent='SAVE RECORD';
+                return;
+            }
+        flyMSG('', data.message);
+				newStockForm_.reset;
+				newStockForm(false);
+        send_btn.disabled=false;
+        send_txt.textContent='SAVE RECORD';
+        //form.reset();
+        loadNames();
+    })
+</script>
+
+
+
 <!--
 Editing product processess
 -->
+<!--
+For Editing Form
+-->
+<script type="text/javascript">
+let editStockForm_ = document.getElementById('editStockForm');
+function editStockForm(option) {
+	if (option) {
+	editStockForm_.classList.add('show');
+	}
+	else {
+	editStockForm_.classList.remove('show');
+	}
+}
+</script>
 
 
 
@@ -947,7 +1149,8 @@ async function editProduct(id) {
 
 		for (var i=0; i<data.store.length; i++) {
 			if (id.toString()===data.store[i]._id.toString()) {
-				displayForm(true);
+				//displayForm(true);
+				editStockForm(true);
 				name.value = data.store[i].name;
 				id__.value = data.store[i].id;
 				qn.value = data.store[i].qn;
@@ -989,8 +1192,9 @@ form_.addEventListener('submit', async (e)=>{
 		flyMSG('err', data.message);
 	}
 	else {
+		editStockForm(false);
 		flyMSG('', data.message);
-		location.reload(true);
+		getStore();
 		form_.reset();
 	}
 

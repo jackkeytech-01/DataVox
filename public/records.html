@@ -99,8 +99,12 @@ main{
     border-color: rgb(0, 200, 200,0.8);
     border-style: solid;
     border-width: 2px;
+	visibility: hidden !important;
 }
-
+.record-card {
+	visibility: visible !important;
+	transition: all 0.5s;
+}
 .record-card:hover{
     transform:translateY(-2px);
 }
@@ -200,7 +204,7 @@ main{
 }
 .zero_error {
     position: fixed;
-    display: flex;
+    display: none;
     top: 30%;
     right: 20%;
     left: 20%;
@@ -217,8 +221,8 @@ main{
     backdrop-filter: blur(100px);
     border-radius: 20px;
 }
-.zero_error.hide {
-    display: none;
+.zero_error.show {
+    display: flex;
 }
 .err {
     color: red;
@@ -634,10 +638,10 @@ For the displaying and disappearing od the top form creator
     showNew(false);
     function showNew(opt) {
         if (opt) {
-            prompt.classList.remove('hide');
+            prompt.classList.add('show');
         }
         else {
-            prompt.classList.add('hide');
+            prompt.classList.remove('show');
         }
     }
 </script>
