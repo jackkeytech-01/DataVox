@@ -31,7 +31,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         <li><a href="#stats">Stats</a></li>
 
         <li><a href="#reviews">Reviews</a></li>
-
+        <% if (!isLogged) {%>
         <li><a href="/login">Login</a></li>
 
         <li>
@@ -39,6 +39,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                 Sign Up
             </a>
         </li>
+        <%} else {%>
+        <li><a href="/account">My Account</a></li>    
+        <%}%>
 
     </ul>
 
@@ -69,7 +72,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         </p>
 
         <div class="hero-buttons">
-
+            <% if (!isLogged) {%>
             <a href="/signup" class="btn-primary">
                 Start Free
             </a>
@@ -77,7 +80,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             <a href="/login" class="btn-secondary">
                 Login
             </a>
-
+            <%} else {%>
+            <a href="/account" class="btn-secondary">
+                My Account
+            </a>    
+            <%}%>
         </div>
 
     </div>
@@ -250,19 +257,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 <!-- CTA -->
 
 <section class="cta">
-
+    <% if (!isLogged) { %>
     <h2>
 
         Ready To Grow Your Business?
 
     </h2>
-
+    
     <a href="/signup" class="btn-primary">
 
         Get Started Today
 
     </a>
-
+    <% } else {%>
+        <a href="/account" class="btn-primary">
+            My Account
+        </a>
+        <%}%>
 </section>
 
 <!-- FOOTER -->

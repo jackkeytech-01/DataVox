@@ -1,7 +1,7 @@
 {
   "name": "Jadata",
   "short_name": "Jadata",
-  "start_url": "/",
+  "start_url": "/account",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#00c6ff",

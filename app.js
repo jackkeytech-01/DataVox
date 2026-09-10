@@ -36,7 +36,7 @@ app.set('views', './views')
 app.use(express.urlencoded({ extended: true }))
 const logger = (req, res, next) => {
   if (!req.session.user) {
-    return res.redirect('/login');
+    return res.redirect('/');
   }
   next();
 }

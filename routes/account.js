@@ -5,12 +5,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 account.get('/', (req, res)=>{
+  let isLogged = false;
   if (req.session.user) {
-   res.redirect('/account');
+    isLogged = true;
   }
-  else {
-   return res.sendFile(path.join(__dirname, '../public', 'landing.html'));
-  }
+   return res.redirect('landing', { isLogged: isLogged })
 });
 
 account.get('/account', async (req, res) => {
