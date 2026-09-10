@@ -16,7 +16,7 @@ account.get('/account', async (req, res) => {
 	if (req.session.user) {
 		return res.render('account');
 	} else {
-		res.redirect('/');
+		return res.redirect('/');
 	}
 });
 
