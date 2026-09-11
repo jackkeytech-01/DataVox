@@ -229,6 +229,7 @@ main{
     font-weight: bolder;
     margin: 2%;
 }
+/*
 input {
     margin-top: 1.5%;
     margin-bottom: 1.5%;
@@ -260,7 +261,7 @@ input:focus {
     text-align: center;
     font-size: 1em;
     font-family: Poppins;
-}
+}*/
 .new_r {
     position: fixed;
     z-index: 9999;
@@ -310,6 +311,7 @@ input:focus {
     }
 }
 </style>
+<link rel="stylesheet" type="text/css" href="/form_styles.css"/>
 <link rel="stylesheet" type="text/css" href="/nav.css"/>
 <link rel="stylesheet" type="text/css" href="/main.css"/>
 <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
@@ -609,6 +611,37 @@ input:focus {
 </div>
 -->
 </main>
+<div id="newRecord" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ New Record </h2>
+            <button onclick="showNew(false);">✖</button>
+        </div>
+
+        <form id="top_prompt">
+        <div class="field">
+            <label>Record Title</label>
+            <input type="text" placeholder="Record Title" name="title" id="title"  required />
+        </div>
+        <!--
+        <div class="field">
+            <label></label>
+            <input type="number" placeholder="e.g. 50" name="qn" id="qn_input" required />
+        </div>
+    -->
+            <div class="actions">
+                <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showNew(false);">
+                    Cancel
+                </button>
+                <button type="submit" class="post-btn">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <form class="zero_error" id="top_prompt" method="post" action="/account/records/new">
     <i class="fa-solid fa-close" onclick="showNew(false);"></i>
     <label>Record Title</label>
@@ -634,7 +667,7 @@ input:focus {
 For the displaying and disappearing od the top form creator
 -->
 <script type="text/javascript">
-    let prompt = document.getElementById('top_prompt');
+    let prompt = document.getElementById('newRecord');
     showNew(false);
     function showNew(opt) {
         if (opt) {

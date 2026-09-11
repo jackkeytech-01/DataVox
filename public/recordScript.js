@@ -63,9 +63,9 @@ async function getRecords() {
 		let card = '';
 		let total_sales = 0;
 		let total_exp = 0;
+	if (data.dailyRecords.length>0) {
 	for (var i = 0; i<data.dailyRecords.length; i++) {
 		//Enablig addition of all sales and expenses
-		
 		let total_sales = 0;
 		let total_exp = 0;
 		//Sales
@@ -128,7 +128,21 @@ async function getRecords() {
     </a>`;
 	
 	}
+}
+
+else {
+	console.log('Working, Zero records');
+	card = `
+	<div style="display: flex; padding: 5%; top: 30%; flex-direction:column; color: grey; position: fixed;justify-self: center; align-self: center;">
+	No Records Found.
+	<button onclick="showNew(true);" style="background: green; padding: 8px; padding-left: 15px; padding-right: 15px; font-weight: 600; margin-top: 20px; color: white; border-radius: 20px; border: none;">
+	<i class="fa fa-plus"></i> Create Record
+	</button>
+	</div>
+	`
+}
 	main.innerHTML = card;
+
 }
 catch (err) {
 	console.log(err.message);

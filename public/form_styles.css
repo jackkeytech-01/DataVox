@@ -81,7 +81,8 @@
 }
 
 .field textarea,
-.field input{
+.field input,
+.field select{
     width:100%;
     padding:14px;
     border: 1px solid #ddd;

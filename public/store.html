@@ -474,8 +474,8 @@ window.location.href='/account/store/sub';
                 <button type="reset" id="cancelBtn" class="cancel-btn" onclick="newStockForm(false)">
                     Cancel
                 </button>
-                <button type="submit" class="post-btn">
-                    Add Stock
+                <button type="submit" id="send_btn" class="post-btn">
+                    <span id="send_txt">Add Stock</span>
                 </button>
             </div>
         </form>
@@ -532,8 +532,8 @@ window.location.href='/account/store/sub';
                 <button type="reset" id="cancelBtn" class="cancel-btn" onclick="editStockForm(false);">
                     Cancel
                 </button>
-                <button type="submit" class="post-btn">
-                    Edit Product
+                <button type="submit" id="send_btn" class="post-btn">
+                    <span id="send_txt">Edit Product</span>
                 </button>
             </div>
         </form>
@@ -1095,14 +1095,15 @@ async function deleteProof(id) {
             if (data.problem) {
                 flyMSG('err', data.message);
                 send_btn.disabled=false;
-                send_txt.textContent='SAVE RECORD';
+                send_txt.textContent='Add Stock';
                 return;
             }
         flyMSG('', data.message);
+				getStore();
 				newStockForm_.reset;
 				newStockForm(false);
         send_btn.disabled=false;
-        send_txt.textContent='SAVE RECORD';
+        send_txt.textContent='Add Stock';
         //form.reset();
         loadNames();
     })

@@ -671,6 +671,72 @@ main{
 ======>>>>FORMS AREA
 
 -->
+<div id="salesForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Add Sale </h2>
+            <button onclick="showSale(false);">✖</button>
+        </div>
+
+        <form id="sale-form">
+
+        <div class="field">
+
+            <label>
+                Product Name
+            </label>
+
+            <select type="text" id="productsName" oninput="updateTotal();" name="name" required>
+        </select>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Quantity
+            </label>
+
+            <input type="number" placeholder="e.g. 5" name="qn" id="qn" oninput="updateTotal();" required/>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number" placeholder="e.g. 20000" id="total" name="total" required/>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="clock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showSale(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Add Sale
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+<!--
     <form class="form-card" id="sale-form" method="post">
 
         <div class="input-group">
@@ -732,10 +798,58 @@ main{
         </button>
 
     </form>
+-->
 
 <!--
 Expense form
 -->
+
+<div id="expenseForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Add Expense </h2>
+            <button onclick="showExp(false);">✖</button>
+        </div>
+
+        <form id="exp-form">
+
+        <div class="field">
+            <label>Title</label>
+            <input  type="text"  placeholder="e.g. Food" name="title" id="qn" oninput="updateTotal();" required/>
+        </div>
+
+        <div class="field">
+            <label>Cost (TZS)</label>
+            <input type="number" placeholder="e.g. 20000" name="cost" required/>
+        </div>
+        <div class="field">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="clock_" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showExp(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Add Expense
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+<!--
     <form class="form-card" id="exp-form" method="post">
 
         <div class="input-group">
@@ -744,9 +858,6 @@ Expense form
                 Title
             </label>
 
-            <input
-            type="text"
-            placeholder="e.g. Food" name="title" id="qn" oninput="updateTotal();" required/>
 
         </div>
 
@@ -756,26 +867,10 @@ Expense form
                 Total Price (TZS)
             </label>
 
-            <input type="number"
-            placeholder="e.g. 20000" name="cost" required/>
 
         </div>
 
-        <div class="input-group">
-
-            <label>
-                Time
-            </label>
-
-            <div class="time-wrapper">
-
-                <input type="text" readonly=true id="clock" name="time" required/>
-
-                <i class="fa-regular fa-clock"></i>
-
-            </div>
-
-        </div>
+        
 
         <button class="save-btn">
 
@@ -786,7 +881,7 @@ Expense form
         </button>
 
     </form>
-
+-->
 
 <!--
 =====>>>END OF FORM AREA
@@ -831,10 +926,23 @@ Expense form
 -->
 <script src="/main.js" type="text/javascript"></script>
 <script type="text/javascript">
+    let salesForm = document.getElementById('salesForm')
+    let expenseForm = document.getElementById('expenseForm')
     function showSale(opt) {
-
+        if (opt) {
+            salesForm.classList.add('show')
+        }
+        else {
+            salesForm.classList.remove('show')
+        }
     }
     function showExp(opt) {
+        if (opt) {
+            expenseForm.classList.add('show')
+        }
+        else {
+            expenseForm.classList.remove('show')
+        }
 
     }
 </script>
@@ -899,6 +1007,7 @@ getRecords();
   const seconds = now.getSeconds().toString().padStart(2, 0);
   const timer = `${hours}:${minutes}:${seconds}`;
   document.getElementById('clock').value = timer;
+  document.getElementById('clock_').value = timer;
 }
 updateClock();
 setInterval(updateClock, 1000);

@@ -464,6 +464,7 @@ main{
     margin-right:8px;
 }
 </style>
+<link rel="stylesheet" href="/form_styles.css" type="text/css"/>
 <link rel="stylesheet" href="/main.css" type="text/css"/>
 <link rel="stylesheet" href="/nav.css" type="text/css"/>
 </head>
@@ -640,7 +641,81 @@ main{
 
 ======>>>>FORMS AREA
 
--->
+--><div id="salesForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Add Sale </h2>
+            <button onclick="showSale(false);">✖</button>
+        </div>
+
+        <form id="sale-form">
+
+        <div class="field">
+
+            <label>
+                Product Name
+            </label>
+
+            <select type="text" id="productsName" oninput="updateTotal();" name="name" required>
+        </select>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Product ID
+            </label>
+
+            <select type="text" id="productsID" oninput="updateTotal();" name="id" required>
+            </select>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Quantity
+            </label>
+
+            <input type="number" placeholder="e.g. 5" name="qn" id="qn" oninput="updateTotal();" required/>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number" placeholder="e.g. 20000" id="total" name="total" required/>
+
+        </div>
+        <div class="field">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="clock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showSale(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Add Sale
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+<!--
     <form class="form-card" id="sale-form" method="post">
 
         <div class="input-group">
@@ -721,10 +796,57 @@ main{
         </button>
 
     </form>
-
+-->
 <!--
 Expense form
 -->
+<div id="expenseForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Add Expense </h2>
+            <button onclick="showExp(false);">✖</button>
+        </div>
+
+        <form id="exp-form">
+
+        <div class="field">
+            <label>Title</label>
+            <input  type="text"  placeholder="e.g. Food" name="title" id="qn" oninput="updateTotal();" required/>
+        </div>
+
+        <div class="field">
+            <label>Cost (TZS)</label>
+            <input type="number" placeholder="e.g. 20000" name="cost" required/>
+        </div>
+        <div class="field">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="exp_clock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showExp(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Add Expense
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!--
     <form class="form-card" id="exp-form" method="post">
 
         <div class="input-group">
@@ -784,7 +906,7 @@ Expense form
 
     </form>
 
-
+-->
 
 <!--
 =================>EDITING FORMS (SALES) AND (EXPENSE)    
@@ -792,6 +914,86 @@ Expense form
 <!--
 ====>SALES EDIT FORM
 -->
+<div id="editSaleForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Edit Sale </h2>
+            <button onclick="showEditSale(false);">✖</button>
+        </div>
+
+        <form id="edit-sale-form">
+
+        <div class="field">
+
+            <label>
+                Product Name
+            </label>
+
+            <input type="text" id="EditproductsName" readonly="true" name="name" style="cursor: not-allowed;" required/>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Product ID
+            </label>
+
+            <input type="text" id="EditproductsID" readonly="true" name="id" style="cursor: not-allowed;" required/>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Quantity
+            </label>
+
+            <input
+            type="number"
+            placeholder="e.g. 5" name="qn" id="Editqn" required/>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number"
+            placeholder="e.g. 20000" id="Edittotal" name="total" required/>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Time
+            </label>
+
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="Editclock" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showEditSale(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Edit Sale
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+<!--
 <form class="form-card" id="edit-sale-form" method="post">
     <center>
         <h2>
@@ -873,11 +1075,68 @@ Expense form
 
         </button>
 
-    </form>
+    </form>-->
 
 <!--
 ====>Expense form    
 -->
+<div id="editExpForm" class="overlay">
+<!-- Dialog -->
+    <div id="dialog" class="dialog">
+        <div class="dialog-header">
+            <h2> 🖋️ Edit Expense </h2>
+            <button onclick="showEditExp(false);">✖</button>
+        </div>
+
+        <form id="edit-exp-form">
+
+         <div class="field">
+
+            <label>
+                Title
+            </label>
+
+            <input type="text" placeholder="e.g. Food" name="title" id="EditTitle" required/>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Total Price (TZS)
+            </label>
+
+            <input type="number" placeholder="e.g. 20000" name="cost" id="EditCost" required/>
+
+        </div>
+
+        <div class="field">
+            
+            <label>
+                Time
+            </label>
+        
+            <div class="time-wrapper">
+
+                <input type="text" readonly=true id="edit_exp_clock" style="display: none;" name="time" required/>
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+        </div>
+        <div class="actions">
+            <button type="reset" id="cancelBtn" class="cancel-btn" onclick="showEditExp(false);">
+                Cancel
+            </button>
+            <button type="submit" class="post-btn">
+                Edit Expense
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+<!--
 <form class="form-card" id="edit-exp-form" method="post">
     <center>
         <h2>Edit Expense</h2>
@@ -906,11 +1165,11 @@ Expense form
         </div>
 
         <div class="input-group">
-            <!--
+            
             <label>
                 Time
             </label>
-        -->
+        
             <div class="time-wrapper">
 
                 <input type="text" readonly=true id="edit_exp_clock" style="display: none;" name="time" required/>
@@ -938,7 +1197,7 @@ Expense form
         </button>
 
     </form>
-
+-->
 <!--
 =====>>>END OF FORM AREA
 -->
@@ -971,49 +1230,48 @@ Expense form
 </script>
 <script src="/main.js" type="text/javascript"></script>
 <script type="text/javascript" defer>
-    let edit_sale_form = document.getElementById('edit-sale-form');
-    let edit_exp_form = document.getElementById('edit-exp-form');
+    let edit_sale_form = document.getElementById('editSaleForm');
+    let edit_exp_form = document.getElementById('editExpForm');
     showEditExp(false);
     showEditSale(false);
     function showEditSale(opt) {
         if (opt) {
             showEditExp(false);
-            edit_sale_form.classList.remove('hide');
+            edit_sale_form.classList.add('show');
         }
         else {
-            edit_sale_form.classList.add('hide');
+            edit_sale_form.classList.remove('show');
         }
     }
     function showEditExp(opt) {
         if (opt) {
             showEditSale(false);
-            edit_exp_form.classList.remove('hide');
+            edit_exp_form.classList.add('show');
         }
         else {
-            edit_exp_form.classList.add('hide');
+            edit_exp_form.classList.remove('show');
         }
     }
 </script>
 <script type="text/javascript">
-    let sale_form = document.getElementById('sale-form');
-    let exp_form = document.getElementById('exp-form');
+    let salesForm = document.getElementById('salesForm')
+    let expenseForm = document.getElementById('expenseForm')
     function showSale(opt) {
         if (opt) {
-        showExp(false);
-            sale_form.classList.remove('hide');
+            salesForm.classList.add('show')
         }
         else {
-            sale_form.classList.add('hide');
+            salesForm.classList.remove('show')
         }
     }
     function showExp(opt) {
         if (opt) {
-            showSale(false);
-            exp_form.classList.remove('hide');
+            expenseForm.classList.add('show')
         }
         else {
-            exp_form.classList.add('hide');
+            expenseForm.classList.remove('show')
         }
+
     }
 </script>
 <script type="text/javascript">
@@ -1108,6 +1366,7 @@ let newQN = '';
 function loadID(id) {
     idCarrier = id;
 }
+    let sale_form = document.getElementById('sale-form')
     sale_form.addEventListener('submit', async (e)=>{
         try {
         e.preventDefault();
@@ -1162,7 +1421,7 @@ function loadID(id) {
         flyMSG('err', 'Server Error occurred. Please try again...');
     }
     });
-
+let exp_form = document.getElementById('exp-form');
 exp_form.addEventListener('submit', async (e)=>{
     let found = false;
     let exp_sn = 0;
