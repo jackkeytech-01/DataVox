@@ -12,7 +12,7 @@ content="width=device-width, initial-scale=1.0">
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <!--<link rel="stylesheet" href="/top_form.css" type="text/css" />-->
 <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
-<link rel="stylesheet" type="text/css" href="/form_styles.css"/>
+<link rel="stylesheet" type="text/css" href="/css/form_styles.css"/>
 <style>
 * {
     box-sizing: border-box;
@@ -330,8 +330,8 @@ cursor:pointer;
 	color: white;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="/nav.css"/>
-<link rel="stylesheet" type="text/css" href="/main.css">
+<link rel="stylesheet" type="text/css" href="/css/nav.css"/>
+<link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
 
@@ -612,8 +612,8 @@ window.location.href='/account/store/sub';
 
 
 <!-- SCRIPT PART -->
-<script type="text/javascript" src="/main.js"></script>
-<script type="text/javascript" src="/top_form.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/top_form.js"></script>
 <script type="text/javascript">
 	displayForm(false);
 </script>
@@ -634,12 +634,12 @@ Fetching user to get total products store
 		let filterValue = document.getElementById('filterSearch').value;
 		console.log();
 			try {
-				const res = await fetch('/account/api/user');
+				const res = await fetch('/account/api/store/all');
 				const data = await res.json();
 					
 					//INCASE STORE LENGTH IS ZERO THEN NO PRODUCTS
 
-				if (data.store.length<=0) {
+				if (data.length<=0) {
 						let err = document.createElement('div');
 						err.setAttribute('class', 'zero');
 						let err_txt = document.createElement('div');
@@ -660,56 +660,56 @@ Fetching user to get total products store
 					
 
 					//ELSE IF NOT LESS OR EQUAL ZERO..THEN THERE ARE PRODUCTS
-					else if (data.store.length>0){
+					else if (data.length>0){
 						let totalProducts = 0;
 						let totalRunOut = 0;
 							let card = '';
 							let runout_card = '';
 						//STORE LOOP
-						for (var i=0; i<data.store.length; i++) {
-							if (data.store[i].name===filterValue) {
+						for (var i=0; i<data.length; i++) {
+							if (data[i].name===filterValue) {
 								document.title = `Searched: ${filterValue}`;
 							totalProducts += 1;
 							//CHECKING RUNNING OUT PRODUCTS TO ALSO BE PRESENT IN RUNNING OUT
-							if (data.store[i].qn<=data.store[i].running_out) {
+							if (data[i].qn<=data[i].running_out) {
 								totalRunOut += 1;
 								runout_card += 
 							`
 							<div class="product-card">
-							<div class="product-name">${data.store[i].name}</div>
+							<div class="product-name">${data[i].name}</div>
 							<div class="info-row">
 								<span class="label">ID</span>
-								<span class="value">${data.store[i].id}</span>
+								<span class="value">${data[i].id}</span>
 							</div>		
 							<div class="info-row">
 								<span class="label">Quantity</span>
-								<span class="value">${data.store[i].qn}</span>
+								<span class="value">${data[i].qn}</span>
 							</div>				
 							<div class="info-row">
 								<span class="label">Unit Price</span>
-								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+								<span class="value">${data[i].unitPrice} (<i>from ${data[i].unitFrom}</i>)</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Unit From</span>
-								<span class="value">${data.store[i].unitFrom}</span>
+								<span class="value">${data[i].unitFrom}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Selling Price</span>
-								<span class="value">${data.store[i].sellingPrice}</span>
+								<span class="value">${data[i].sellingPrice}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Running Out</span>
-								<span class="value">${data.store[i].running_out}</span>
+								<span class="value">${data[i].running_out}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Created On</span>
-								<span class="value">${data.store[i].createdAt}</span>
+								<span class="value">${data[i].createdAt}</span>
 							</div>
 							<div class="card-actions">
-							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+							<button class="edit-btn" onclick="editProduct('${data[i]._id}');">
 								<i class="fa fa-pen"></i> Edit
 							</button>
-							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+							<button class="delete-btn" onclick="deleteProof('${data[i]._id}');">
 								<i class="fa fa-trash"></i> Delete
 							</button>
 							</div>
@@ -720,36 +720,36 @@ Fetching user to get total products store
 							card += 
 							`
 							<div class="product-card">
-							<div class="product-name">${data.store[i].name}</div>
+							<div class="product-name">${data[i].name}</div>
 							<div class="info-row">
 								<span class="label">ID</span>
-								<span class="value">${data.store[i].id}</span>
+								<span class="value">${data[i].id}</span>
 							</div>		
 							<div class="info-row">
 								<span class="label">Quantity</span>
-								<span class="value">${data.store[i].qn}</span>
+								<span class="value">${data[i].qn}</span>
 							</div>				
 							<div class="info-row">
 								<span class="label">Unit Price</span>
-								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+								<span class="value">${data[i].unitPrice} (<i>from ${data[i].unitFrom}</i>)</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Selling Price</span>
-								<span class="value">${data.store[i].sellingPrice}</span>
+								<span class="value">${data[i].sellingPrice}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Running Out</span>
-								<span class="value">${data.store[i].running_out}</span>
+								<span class="value">${data[i].running_out}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Created On</span>
-								<span class="value">${data.store[i].createdAt}</span>
+								<span class="value">${data[i].createdAt}</span>
 							</div>
 							<div class="card-actions">
-							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+							<button class="edit-btn" onclick="editProduct('${data[i]._id}');">
 								<i class="fa fa-pen"></i> Edit
 							</button>
-							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+							<button class="delete-btn" onclick="deleteProof('${data[i]._id}');">
 								<i class="fa fa-trash"></i> Delete
 							</button>
 							</div>
@@ -792,12 +792,12 @@ async function getStore() {
 		runout_view.innerHTML = '';
 		product_view.innerHTML = '';
 			try {
-				const res = await fetch('/account/api/user');
+				const res = await fetch('/account/api/store/all');
 				const data = await res.json();
-					
+					console.log(data);
 					//INCASE STORE LENGTH IS ZERO THEN NO PRODUCTS
 
-				if (data.store.length<=0) {
+				if (data.length<=0) {
 						let err = document.createElement('div');
 						err.setAttribute('class', 'zero');
 						let err_txt = document.createElement('div');
@@ -818,54 +818,54 @@ async function getStore() {
 					
 
 					//ELSE IF NOT LESS OR EQUAL ZERO..THEN THERE ARE PRODUCTS
-					else if (data.store.length>0){
+					else if (data.length>0){
 						let totalProducts = 0;
 						let totalRunOut = 0;
 							let card = '';
 							let runout_card = '';
 						//STORE LOOP
-						for (var i=0; i<data.store.length; i++) {
+						for (var i=0; i<data.length; i++) {
 							totalProducts += 1;
 							//CHECKING RUNNING OUT PRODUCTS TO ALSO BE PRESENT IN RUNNING OUT
-							if (data.store[i].qn<=data.store[i].running_out) {
+							if (data[i].qn<=data[i].running_out) {
 								totalRunOut += 1;
 								runout_card += 
 							`
 							<div class="product-card">
-							<div class="product-name">${data.store[i].name}</div>
+							<div class="product-name">${data[i].name}</div>
 							<div class="info-row">
 								<span class="label">ID</span>
-								<span class="value">${data.store[i].id}</span>
+								<span class="value">${data[i].id}</span>
 							</div>		
 							<div class="info-row">
 								<span class="label">Quantity</span>
-								<span class="value">${data.store[i].qn}</span>
+								<span class="value">${data[i].qn}</span>
 							</div>				
 							<div class="info-row">
 								<span class="label">Unit Price</span>
-								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+								<span class="value">${data[i].unitPrice} (<i>from ${data[i].unitFrom}</i>)</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Unit From</span>
-								<span class="value">${data.store[i].unitFrom}</span>
+								<span class="value">${data[i].unitFrom}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Selling Price</span>
-								<span class="value">${data.store[i].sellingPrice}</span>
+								<span class="value">${data[i].sellingPrice}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Running Out</span>
-								<span class="value">${data.store[i].running_out}</span>
+								<span class="value">${data[i].running_out}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Created On</span>
-								<span class="value">${data.store[i].createdAt}</span>
+								<span class="value">${data[i].createdAt}</span>
 							</div>
 							<div class="card-actions">
-							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+							<button class="edit-btn" onclick="editProduct('${data[i]._id}');">
 								<i class="fa fa-pen"></i> Edit
 							</button>
-							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+							<button class="delete-btn" onclick="deleteProof('${data[i]._id}');">
 								<i class="fa fa-trash"></i> Delete
 							</button>
 							</div>
@@ -876,36 +876,36 @@ async function getStore() {
 							card += 
 							`
 							<div class="product-card">
-							<div class="product-name">${data.store[i].name}</div>
+							<div class="product-name">${data[i].name}</div>
 							<div class="info-row">
 								<span class="label">ID</span>
-								<span class="value">${data.store[i].id}</span>
+								<span class="value">${data[i].id}</span>
 							</div>		
 							<div class="info-row">
 								<span class="label">Quantity</span>
-								<span class="value">${data.store[i].qn}</span>
+								<span class="value">${data[i].qn}</span>
 							</div>				
 							<div class="info-row">
 								<span class="label">Unit Price</span>
-								<span class="value">${data.store[i].unitPrice} (<i>from ${data.store[i].unitFrom}</i>)</span>
+								<span class="value">${data[i].unitPrice} (<i>from ${data[i].unitFrom}</i>)</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Selling Price</span>
-								<span class="value">${data.store[i].sellingPrice}</span>
+								<span class="value">${data[i].sellingPrice}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Running Out</span>
-								<span class="value">${data.store[i].running_out}</span>
+								<span class="value">${data[i].running_out}</span>
 							</div>
 							<div class="info-row">
 								<span class="label">Created On</span>
-								<span class="value">${data.store[i].createdAt}</span>
+								<span class="value">${data[i].createdAt}</span>
 							</div>
 							<div class="card-actions">
-							<button class="edit-btn" onclick="editProduct('${data.store[i]._id}');">
+							<button class="edit-btn" onclick="editProduct('${data[i]._id}');">
 								<i class="fa fa-pen"></i> Edit
 							</button>
-							<button class="delete-btn" onclick="deleteProof('${data.store[i]._id}');">
+							<button class="delete-btn" onclick="deleteProof('${data[i]._id}');">
 								<i class="fa fa-trash"></i> Delete
 							</button>
 							</div>
@@ -995,7 +995,7 @@ async function loadNames() {
 	selector.innerHTML = "<li class='loading-text'>Loading...</li>";
 	
 	try {
-		const user = await fetch('/account/api/user');
+		const user = await fetch('/account/api/store/all');
 		const data = await user.json();
 		
 		for (var i = 0; i < data.names.length; i++) {
@@ -1019,7 +1019,7 @@ async function loadNames() {
 
 
 </script>
-<script type="text/javascript" src="/nav.js" defer></script>
+<script type="text/javascript" src="/js/nav.js" defer></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         loadNav('store');
@@ -1145,20 +1145,20 @@ async function editProduct(id) {
 	let sellPrice = document.getElementById('sellPrice_input');
 	form_.setAttribute('action', `/account/store/edit/${id}`);
 	try {
-		const res = await fetch('/account/api/user');
+		const res = await fetch('/account/api/store/all');
 		const data = await res.json();
-
-		for (var i=0; i<data.store.length; i++) {
-			if (id.toString()===data.store[i]._id.toString()) {
+		
+		for (var i=0; i<data.length; i++) {
+			if (id.toString()===data[i]._id.toString()) {
 				//displayForm(true);
 				editStockForm(true);
-				name.value = data.store[i].name;
-				id__.value = data.store[i].id;
-				qn.value = data.store[i].qn;
-				unitPrice.value = data.store[i].unitPrice;
-				unitFrom.value = data.store[i].unitFrom;
-				runOut.value = data.store[i].running_out;
-				sellPrice.value = data.store[i].sellingPrice;
+				name.value = data[i].name;
+				id__.value = data[i].id;
+				qn.value = data[i].qn;
+				unitPrice.value = data[i].unitPrice;
+				unitFrom.value = data[i].unitFrom;
+				runOut.value = data[i].running_out;
+				sellPrice.value = data[i].sellingPrice;
 				id_ = id;
 			}
 		}

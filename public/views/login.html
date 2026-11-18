@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In | DataApp</title>
-    <link rel="stylesheet" href="./form_style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/form_style.css" type="text/css"/>
     <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
-    <link rel="manifest" href="manifest.json"/>
+    <link rel="manifest" href="/manifest.json"/>
 </head>
 <body>
     <form id="login_form" method="post" class="form" action="login">
@@ -46,10 +46,10 @@
     </div>
 
 </form>
-<script type="text/javascript" src="./login_script.js"></script>
+<script type="text/javascript" src="/js/login_script.js"></script>
 <script type="text/javascript">
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
+  navigator.serviceWorker.register("/js/sw.js");
 }
 
 </script>

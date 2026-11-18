@@ -6,7 +6,7 @@
 
 <title>Daily Record</title>
 
-<link rel="stylesheet" href="daily-record.css">
+<link rel="stylesheet" href="/css/daily-record.css">
 <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 <style>
@@ -464,9 +464,9 @@ main{
     margin-right:8px;
 }
 </style>
-<link rel="stylesheet" href="/form_styles.css" type="text/css"/>
-<link rel="stylesheet" href="/main.css" type="text/css"/>
-<link rel="stylesheet" href="/nav.css" type="text/css"/>
+<link rel="stylesheet" href="/css/form_styles.css" type="text/css"/>
+<link rel="stylesheet" href="/css/main.css" type="text/css"/>
+<link rel="stylesheet" href="/css/nav.css" type="text/css"/>
 </head>
 <body onload="loadID('<%=idCarrier%>');">
 
@@ -657,7 +657,7 @@ main{
                 Product Name
             </label>
 
-            <select type="text" id="productsName" oninput="updateTotal();" name="name" required>
+            <select type="text" id="productsName" oninput="updateID();" name="name" required>
         </select>
 
         </div>
@@ -1221,14 +1221,13 @@ Expense form
 <!--
 =====>SCRIPT ZONE
 -->
-<script type="text/javascript" src="/nav.js" defer></script>
+<script type="text/javascript" src="/js/nav.js" defer></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         loadNav('records');
-    updateID();
     });
 </script>
-<script src="/main.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
 <script type="text/javascript" defer>
     let edit_sale_form = document.getElementById('editSaleForm');
     let edit_exp_form = document.getElementById('editExpForm');
@@ -1259,6 +1258,7 @@ Expense form
     function showSale(opt) {
         if (opt) {
             salesForm.classList.add('show')
+            getRecords();
         }
         else {
             salesForm.classList.remove('show')
@@ -1279,26 +1279,154 @@ showSale(false);
 showExp(false);
 </script>
 <script type="text/javascript">
-let selector = document.getElementById('productsName');
+
+const selector = document.getElementById('productsName');
+const idSelector = document.getElementById('productsID');
+
+let productsData = [];
+
 async function getRecords() {
     try {
-const res = await fetch('/account/api/user');
-const data = await res.json();
-for (var i=0; i<data.names.length; i++) {
-    let option = document.createElement('option');
-    option.setAttribute('value', `${data.names[i]}`);
-    option.innerHTML = data.names[i];
-    selector.appendChild(option)
+        selector.innerHTML = '<option value="">Loading products...</option>';
+
+        const res = await fetch('/account/api/store/all');
+
+        if (!res.ok) {
+            throw new Error(`Server returned ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid product data received from server.');
+        }
+
+        productsData = data;
+
+        selector.replaceChildren();
+        idSelector.replaceChildren();
+
+        // Remove duplicate product names
+        const loadedNames = new Set();
+
+        productsData.forEach(product => {
+
+            if (!product.name) return;
+
+            const normalizedName = product.name.trim().toLowerCase();
+
+            if (!loadedNames.has(normalizedName)) {
+
+                loadedNames.add(normalizedName);
+
+                const option = document.createElement('option');
+
+                option.value = product.name;
+                option.textContent = product.name;
+
+                selector.appendChild(option);
+            }
+        });
+
+        if (selector.options.length === 0) {
+            selector.innerHTML = '<option value="">No products available</option>';
+            return;
+        }
+
+        // Automatically load IDs for the first product
+        updateID();
+
+    } catch (err) {
+
+        console.error('Product loading error:', err);
+
+        selector.innerHTML =
+            '<option value="">Failed to load products</option>';
+
+        idSelector.replaceChildren();
+
+        flyMSG('err', 'Unable to load products. Please try again.');
+    }
 }
+
+
+// LOAD PRODUCT IDs
+function updateID() {
+
+    const selectedName = selector.value.trim().toLowerCase();
+
+    idSelector.replaceChildren();
+
+    const matchingProducts = productsData.filter(product =>
+        product.name &&
+        product.name.trim().toLowerCase() === selectedName
+    );
+
+    matchingProducts.forEach(product => {
+
+        const option = document.createElement('option');
+
+        option.value = product.id;
+        option.textContent = product.id;
+
+        idSelector.appendChild(option);
+
+    });
+
+    // Update total when product selection changes
+    updateTotal();
 }
- catch (err) {
-    flyMSG('err' , 'Server Error Occurred.')
- }
+
+
+// CALCULATE TOTAL PRICE
+async function updateTotal() {
+
+    try {
+
+        const selectedName = selector.value.trim().toLowerCase();
+        const selectedID = idSelector.value;
+
+        const qn = Number(document.getElementById('qn').value);
+        const total = document.getElementById('total');
+
+        if (!selectedName || !selectedID || !qn || qn < 0) {
+            total.value = '';
+            return;
+        }
+
+        const product = productsData.find(item =>
+            item.name &&
+            item.name.trim().toLowerCase() === selectedName &&
+            String(item.id) === String(selectedID)
+        );
+
+        if (!product) {
+            total.value = '';
+            return;
+        }
+
+        const price = qn >= Number(product.unitFrom)
+            ? Number(product.unitPrice)
+            : Number(product.sellingPrice);
+
+        total.value = qn * price;
+
+    } catch (err) {
+
+        console.error('Total calculation error:', err);
+
+    }
 }
+
+
+// INITIALIZE
+selector.addEventListener('change', updateID);
+
 getRecords();
+
     async function updateTotal() {
         try {
-        const res = await fetch('/account/api/user');
+        const res = await fetch('/account/api/store/all');
         const data = await res.json();
         let _name = document.getElementById('productsName').value;
         let id_bar = document.getElementById('productsID').value;
@@ -1309,20 +1437,20 @@ getRecords();
             flyMSG('err', 'Data Input Error. Please try again.');
         }
         else {
-            for (var i=0; i<data.store.length; i++) {
+            for (var i=0; i<data.length; i++) {
                 if (
-                (data.store[i].name===_name)
+                (data[i].name===_name)
                  &&
-                (data.store[i].id===id_bar)
+                (data[i].id===id_bar)
                 ) 
                 {
                     //Get unitFrom qn and chack
-                    if (qn>=data.store[i].unitFrom) {
-                        let _total = qn*data.store[i].unitPrice;
+                    if (qn>=data[i].unitFrom) {
+                        let _total = qn*data[i].unitPrice;
                         total.value = `${_total}`;
                     }
                     else {
-                        let _total = qn*data.store[i].sellingPrice;
+                        let _total = qn*data[i].sellingPrice;
                         total.value = `${_total}`;
                     }
                 }
@@ -1339,14 +1467,14 @@ getRecords();
         let id_bar = document.getElementById('productsID');
         id_bar.replaceChildren();
         try {
-            const _user = await fetch('/account/api/user');
+            const _user = await fetch('/account/api/store/all');
             const data = await _user.json();
             //Get products with similar name to get their ID's
-            for (var i=0; i<data.store.length; i++) {
-                if (data.store[i].name===name_bar) {
+            for (var i=0; i<data.length; i++) {
+                if (data[i].name===name_bar) {
                     let option = document.createElement('option');
-                    option.setAttribute('value', `${data.store[i].id}`);   
-                    option.innerHTML = data.store[i].id;
+                    option.setAttribute('value', `${data[i].id}`);   
+                    option.innerHTML = data[i].id;
                     id_bar.appendChild(option);
                 }
             }
@@ -1378,26 +1506,26 @@ function loadID(id) {
 
         //First Passing the data to various statements
             //Fetching data from user to get target
-            const _user = await fetch('/account/api/user');
-            const _record = await _user.json();
+            const _user = await fetch('/account/api/store/all');
+            const store = await _user.json();
 
-        for (var i=0; i<_record.store.length; i++) 
+        for (var i=0; i<store.length; i++) 
         {
             if (
-                    name.toString().toLowerCase()===_record.store[i].name.toString().toLowerCase()
+                    name.toString().toLowerCase()===store[i].name.toString().toLowerCase()
                         &&
-                    qn>_record.store[i].qn
+                    qn>store[i].qn
                 ) {
                 flyMSG('err', 'Quantity out of range...');
                 }
             if (
-                (id__.toString().toLowerCase()===_record.store[i].id.toString().toLowerCase())
+                (id__.toString().toLowerCase()===store[i].id.toString().toLowerCase())
                         &&
-                    (qn<_record.store[i].qn)
+                    (qn<store[i].qn)
                 ) {
 
-                    storeID = _record.store[i]._id.toString();
-                    newQN = Number(_record.store[i].qn) - Number(qn);
+                    storeID = store[i]._id.toString();
+                    newQN = Number(store[i].qn) - Number(qn);
                     
             }
             }
@@ -1433,8 +1561,8 @@ exp_form.addEventListener('submit', async (e)=>{
         const time = e.target.time.value;
         //alert(`${title} : ${cost} : ${time}`);
         //Checking if the expense was already there
-        const user_ = await fetch('/account/api/user');
-        const _user = await user_.json();
+        ///const user_ = await fetch('/account/api/user');
+        //const _user = await user_.json();
 
         const res = await fetch('/account/records/edit/add/exp', {
             method: 'POST',
@@ -1473,26 +1601,26 @@ exp_form.addEventListener('submit', async (e)=>{
     let edit_clock = document.getElementById('Editclock');
     let sale_edit_form = document.getElementById('edit-sale-form');
     async function editSale(id) {
-        const _user = await fetch('/account/api/user');
+        const _user = await fetch('/account/api/records/all');
         const data = await _user.json();
         showEditSale(true);
-        for (var i=0; i<data.dailyRecords.length; i++) {
-           for (var s=0; s<data.dailyRecords[i].sales.length; s++) {
-            if (data.dailyRecords[i].sales[s]._id.toString()===id.toString()) {
+        for (var i=0; i<data.length; i++) {
+           for (var s=0; s<data[i].sales.length; s++) {
+            if (data.sales[s]._id.toString()===id.toString()) {
                 recordSN = i;
                 saleSN = s;
             }
            }
         }
-        initialQN = data.dailyRecords[recordSN].sales[saleSN].qn;
-        initialCost = data.dailyRecords[recordSN].sales[saleSN].cost;
+        initialQN = data[recordSN].sales[saleSN].qn;
+        initialCost = data[recordSN].sales[saleSN].cost;
         console.log(initialQN);
         console.log(initialCost);
-        edit_name.value = data.dailyRecords[recordSN].sales[saleSN].name;
-        edit_id.value = data.dailyRecords[recordSN].sales[saleSN].id;
-        edit_qn.value = data.dailyRecords[recordSN].sales[saleSN].qn;
-        edit_cost.value = data.dailyRecords[recordSN].sales[saleSN].cost;
-        edit_clock.value = data.dailyRecords[recordSN].sales[saleSN].createdAt;
+        edit_name.value = data[recordSN].sales[saleSN].name;
+        edit_id.value = data[recordSN].sales[saleSN].id;
+        edit_qn.value = data[recordSN].sales[saleSN].qn;
+        edit_cost.value = data[recordSN].sales[saleSN].cost;
+        edit_clock.value = data[recordSN].sales[saleSN].createdAt;
     }
     sale_edit_form.addEventListener('submit', async (e)=>{
         e.preventDefault();
@@ -1541,18 +1669,23 @@ exp_form.addEventListener('submit', async (e)=>{
                     let storeSN = 0;
                     //We have to return some to store
                     try {
-                        const data = await fetch('/account/api/user');
+                        const data = await fetch('/account/api/store/all');
                         const _user = await data.json();
-                        for (var i=0; i<_user.store.length; i++) {
+
+                        //and for daily records
+                        const data_ = await fetch("/account/api/records/all");
+                        const records_ = await data_.json();
+
+                        for (var i=0; i<_user.length; i++) {
                             if (
-                                (_user.store[i].name.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].name.toString().toLowerCase())
+                                (_user[i].name.toString().toLowerCase()===records_[recordSN].sales[saleSN].name.toString().toLowerCase())
                                     &&
-                                (_user.store[i].id.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].id.toString().toLowerCase())
+                                (_user[i].id.toString().toLowerCase()===records_[recordSN].sales[saleSN].id.toString().toLowerCase())
                                 ) {
                                     storeSN = i;
                                 }
                          }
-                            let new_qn = _user.store[storeSN].qn + net;
+                            let new_qn = _user[storeSN].qn + net;
                             const res = await fetch('/account/records/edit/sale/all',
                                 {
                                     method: 'PUT',
@@ -1582,22 +1715,22 @@ exp_form.addEventListener('submit', async (e)=>{
                     let storeSN = 0;
                     //We have to remove some from store
                     try {
-                        const data = await fetch('/account/api/user');
+                        const data = await fetch('/account/api/store/all');
                         const _user = await data.json();
-                        for (var i=0; i<_user.store.length; i++) {
+                        for (var i=0; i<_user.length; i++) {
                             if (
-                                (_user.store[i].name.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].name.toString().toLowerCase())
+                                (_user[i].name.toString().toLowerCase()===records_[recordSN].sales[saleSN].name.toString().toLowerCase())
                                     &&
-                                (_user.store[i].id.toString().toLowerCase()===_user.dailyRecords[recordSN].sales[saleSN].id.toString().toLowerCase())
+                                (_user[i].id.toString().toLowerCase()===records_[recordSN].sales[saleSN].id.toString().toLowerCase())
                                 ) {
                                     storeSN = i;
                                 }
                          }
-                         if (_user.store[storeSN].qn<net) {
-                            flyMSG('err', `Out of products in store. Only ${_user.store[storeSN].qn} are available.`)
+                         if (_user[storeSN].qn<net) {
+                            flyMSG('err', `Out of products in store. Only ${_user[storeSN].qn} are available.`)
                          }
                          else {
-                            let new_qn = _user.store[storeSN].qn - net;
+                            let new_qn = _user[storeSN].qn - net;
                             const res = await fetch('/account/records/edit/sale/all',
                                 {
                                     method: 'PUT',
@@ -1628,12 +1761,12 @@ exp_form.addEventListener('submit', async (e)=>{
     async function deleteSale(id) {
         targetSaleID = id;
         try {
-        const _user = await fetch('/account/api/user');
+        const _user = await fetch('/account/api/records/all');
         const data = await _user.json();
-        for (var i=0; i<data.dailyRecords.length; i++) {
-            if (data.dailyRecords[i]._id.toString()===idCarrier.toString()) {
-                for (var s=0;s<data.dailyRecords[i].sales.length; s++) {
-                    if (data.dailyRecords[i].sales[s]._id===targetSaleID) {
+        for (var i=0; i<data.length; i++) {
+            if (data[i]._id.toString()===idCarrier.toString()) {
+                for (var s=0;s<data[i].sales.length; s++) {
+                    if (data[i].sales[s]._id===targetSaleID) {
                         saleSN = s;
                         recordSN = i;
                     }
@@ -1643,10 +1776,10 @@ exp_form.addEventListener('submit', async (e)=>{
         const userconfirm = confirm(`
         Are you sure you want to delete?\n
         Sale Record: 
-        ${data.dailyRecords[recordSN].sales[saleSN].name}\t
-        ${data.dailyRecords[recordSN].sales[saleSN].id}\t
-        ${data.dailyRecords[recordSN].sales[saleSN].qn}\t
-        ${data.dailyRecords[recordSN].sales[saleSN].cost}
+        ${data[recordSN].sales[saleSN].name}\t
+        ${data[recordSN].sales[saleSN].id}\t
+        ${data[recordSN].sales[saleSN].qn}\t
+        ${data[recordSN].sales[saleSN].cost}
         `);
         if (userconfirm) {
             deleteSaleNow(targetSaleID);
@@ -1689,18 +1822,18 @@ exp_form.addEventListener('submit', async (e)=>{
         showEditExp(true);
         ExpTargetID = id;
         try {
-            const user = await fetch('/account/api/user');
-            const data = await user.json();
-            for (var i=0; i<data.dailyRecords.length; i++) {
-                for (var e=0; e<data.dailyRecords[i].expense.length; e++) {
-                    if (data.dailyRecords[i].expense[e]._id.toString()===ExpTargetID.toString()) {
+            const user = await fetch('/account/api/records/all');
+            const dat = await user.json();
+            for (var i=0; i<dat.length; i++) {
+                for (var e=0; e<dat[i].expense.length; e++) {
+                    if (dat[i].expense[e]._id.toString()===ExpTargetID.toString()) {
                         ExpRecordSN = i;
                         ExpTargetSN = e;
                     }
                 }
             }
-            titleField.value = data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].title;
-            costField.value = data.dailyRecords[ExpRecordSN].expense[ExpTargetSN].cost;
+            titleField.value = dat[ExpRecordSN].expense[ExpTargetSN].title;
+            costField.value = dat[ExpRecordSN].expense[ExpTargetSN].cost;
         }
         catch (err) {
             console.log(err.message);
@@ -1739,11 +1872,11 @@ exp_form.addEventListener('submit', async (e)=>{
     let ExpTargetSN = 0;
         ExpTargetID = id;
         try {
-            const user = await fetch('/account/api/user');
+            const user = await fetch('/account/api/records/all');
             const data = await user.json();
-            for (var i=0; i<data.dailyRecords.length; i++) {
-                for (var e=0; e<data.dailyRecords[i].expense.length; e++) {
-                    if (data.dailyRecords[i].expense[e]._id.toString()===ExpTargetID.toString()) {
+            for (var i=0; i<data.length; i++) {
+                for (var e=0; e<data[i].expense.length; e++) {
+                    if (data[i].expense[e]._id.toString()===ExpTargetID.toString()) {
                         ExpRecordSN = i;
                         ExpTargetSN = e;
                     }

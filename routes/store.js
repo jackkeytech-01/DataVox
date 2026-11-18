@@ -10,16 +10,38 @@ const mongoose = require('mongoose');
 =====================================
 
 */
-store.get('/account/store', async (req, res)=>{
-  res.sendFile(path.join(__dirname, "../public", "store.html"))  
+//=>Get all store products
+store.get('/account/api/store/all', async (req, res)=>{
+  const store_data = await User.findOne({ _id: req.session.user })
+  return res.json(store_data.store);
+})
+//=>Adding one more store product
+store.post('/account/api/store/add', async(req, res)=>{
+  const { name, qn, unitPrice, unitFrom, runOut, sellPrice, time } = req.body;
+
+})
+//=>Getting targetted store product
+store.get('/account/api/store/:id', async (req, res)=>{
+  const { id } = req.params;
+  const _user = await User.findOne({ _id: req.session.user });
+  const _all = await _user.store;
+  if (id>_all.length) {
+    return res.status(500).sendFile(path.join(__dirname, "../public/views", "error.html"));
+  }
+  const _target = await _all[id];
+  return res.status(200).json(_target);
 })
 
-store.get('/account/store/add', async (req, res)=>{
+//=>Updating the targetted store data
+store.put('/account/api/store/:id', async (req, res)=>{
+  const { id } = req.params;
   const _user = await User.findOne({ _id: req.session.user });
-  if (!_user) {
-    return res.status(500).sendFile(path.join(__dirname, "../public", "error.html"))
-  }
-  return res.sendFile(path.join(__dirname, "../public", "new_record.html"));
+
+
+})
+
+store.get('/account/store', async (req, res)=>{
+  res.sendFile(path.join(__dirname, "../public/views", "store.html"))  
 })
 
 store.post('/account/store/add', async (req, res)=>{

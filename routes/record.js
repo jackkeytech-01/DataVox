@@ -7,10 +7,16 @@ const path = require('path');
 
 
 record.get('/account/records', (req, res)=>{
-  res.sendFile(path.join(__dirname, "../public", "records.html"));
+  res.sendFile(path.join(__dirname, "../public/views", "records.html"));
 })
 
 
+//=>Getting all records
+record.get('/account/api/records/all', async (req, res)=>{
+  const _user = await User.findOne({ _id: req.session.user });
+  const _records = await _user.dailyRecords;
+  res.status(200).json(_records);
+})
 
 
 record.post(process.env.NEW_RECORDS_API, async (req, res)=>{

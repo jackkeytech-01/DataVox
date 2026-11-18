@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const PDFDocument = require('pdfkit');
 
 reports.get('/account/reports', (req, res)=>{
-  res.sendFile(path.join(__dirname, "../public", "reports.html"));
+  res.sendFile(path.join(__dirname, "../public/views", "reports.html"));
 })
 
 reports.get(process.env.GET_REPORTS_API, async (req, res)=>{

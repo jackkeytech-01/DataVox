@@ -13,9 +13,9 @@
 <link rel="manifest" href="manifest.json"/>
 <link rel="icon" type="image/png" href="/image/datavox_icon.png"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
-  <link rel="stylesheet" href="./style.css" type="text/css"/>
-  <link rel="stylesheet" href="./main.css" type="text/css"/>
-  <link rel="stylesheet" type="text/css" href="/nav.css"/>
+  <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+  <link rel="stylesheet" href="/css/main.css" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="/css/nav.css"/>
   <style>
     body {
       /*background-image: linear-gradient(to right, rgb(0, 128, 0, 0.8), rgb(128, 128, 128), rgb(0, 200, 200) );*/
@@ -70,6 +70,26 @@ linear-gradient(
       border-radius: 15px;
       text-align: center;
       cursor: default;
+    }
+    .feed_box {
+      background-color: transparent;
+      position: fixed; 
+      right: 2%; 
+      border-radius: 60px; 
+      z-index: 9999; 
+      bottom: 25% !important; 
+      padding: 15px 15px; 
+      border-color: lime; 
+      border-style: solid; 
+      border-width: 2px; 
+      color: white;
+      backdrop-filter: blur(60px);
+      cursor: pointer;
+      transition: all 1s;
+    }
+    .feed_box:hover {
+      border-color: white;
+      background-color: #00a8cc;
     }
   </style>
 </head>
@@ -157,15 +177,16 @@ linear-gradient(
 
     </div>
   </div>
+  <div class="feed_box" onclick="window.location.href='/account/feeds';"><i class="fa fa-comment"></i></div>
   <nav class="bottom-nav" id="nav"></nav>
-  <script type="text/javascript" src="/dateScript.js"></script>
-  <script type="text/javascript" src="nav.js"></script>
+  <script type="text/javascript" src="/js/dateScript.js"></script>
+  <script type="text/javascript" src="/js/nav.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
         loadNav('home');
     });
 </script>
-   <script type="text/javascript" src="main.js" defer></script>
+   <script type="text/javascript" src="/js/main.js" defer></script>
   <script type="text/javascript" defer>
     let logger = document.getElementById('logger');
     let icon = document.getElementById('loggericon');
@@ -179,7 +200,6 @@ linear-gradient(
       txt.innerHTML = 'Log Out';
       const res = await fetch("/account/api/user");
       const data = await res.json();
-      flyMSG('', `Welcome ${data.name}`);
       document.getElementById('name').innerHTML = data.name;
     } catch (err) {
       window.location.href='/login';
@@ -195,7 +215,7 @@ linear-gradient(
   </script>
   <script type="text/javascript">
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
+  navigator.serviceWorker.register("/js/sw.js");
 }
 
 </script>

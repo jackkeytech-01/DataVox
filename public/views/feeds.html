@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JADATA | Feedback</title>
+    <link rel="stylesheet" href="/css/feedback.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">⬡</span>
+            <span>JADATA</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Page heading -->
+        <section class="page-heading">
+            <div class="heading-icon">💬</div>
+            <h2>Feedback</h2>
+            <p>Share your thoughts and help us improve JADATA</p>
+        </section>
+
+        <!-- New Feedback -->
+        <section class="feedback-form-card">
+
+            <h3>Send New Feedback</h3>
+            <p class="form-description">
+                Have an idea, suggestion or something to report?
+                We'd love to hear from you.
+            </p>
+
+            <form id="feedbackForm">
+
+                <label for="feedbackMessage">
+                    Your Feedback
+                </label>
+
+                <textarea
+                    id="feedbackMessage"
+                    name="message"
+                    placeholder="Write your feedback here..."
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+                <div class="form-footer">
+                    <span id="characterCount">0 / 2000</span>
+
+                    <button type="submit" id="submitBtn">
+                        <span>Send Feedback</span>
+                        <span>➤</span>
+                    </button>
+                </div>
+
+                <p id="formMessage" class="form-message"></p>
+
+            </form>
+        </section>
+
+        <!-- Previous Feedback -->
+        <section class="history-section">
+
+            <div class="history-heading">
+                <h3>Previous Feedbacks</h3>
+                <span id="feedbackCount">0</span>
+            </div>
+
+            <div id="feedbackList">
+
+                <!-- Feedbacks will be loaded here -->
+
+                <div class="loading-message">
+                    Loading your feedbacks...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+
+        <a href="/account">
+            <span>⌂</span>
+            Home
+        </a>
+
+        <a href="/records">
+            <span>▤</span>
+            Records
+        </a>
+
+        <a href="/store">
+            <span>▣</span>
+            Store
+        </a>
+
+        <a href="/reports">
+            <span>▥</span>
+            Reports
+        </a>
+
+    </nav>
+
+    <script src="/js/feedback.js"></script>
+
+</body>
+</html>
